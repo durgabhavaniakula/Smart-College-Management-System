@@ -1,0 +1,260 @@
+# SMART COLLEGE MANAGEMENT & ACADEMIC ANALYTICS SYSTEM
+## MEDIUM QUERIES — Q41 to Q70
+### Aggregate Functions, Joins, GROUP BY, HAVING and Academic Analysis
+
+USE smart_college;
+
+-- =========================================================
+-- A. AGGREGATE FUNCTIONS (COUNT, SUM, AVG, MIN, MAX)
+-- =========================================================
+
+-- Q41. Count the total number of students.
+SELECT COUNT(*) AS total_students
+FROM students;
+
+-- Q42. Count the total number of faculty members.
+SELECT COUNT(*) AS total_faculty
+FROM faculty;
+
+-- Q43. Count the total number of courses.
+SELECT COUNT(*) AS total_courses
+FROM courses;
+
+-- Q44. Count the total number of enrollments.
+SELECT COUNT(*) AS total_enrollments
+FROM enrollments;
+
+-- Q45. Find the average marks obtained by students.
+SELECT ROUND(AVG(marks_obtained), 2) AS average_marks
+FROM marks;
+
+-- Q46. Find the highest and lowest marks.
+SELECT MAX(marks_obtained) AS highest_marks,
+       MIN(marks_obtained) AS lowest_marks
+FROM marks;
+
+
+-- =========================================================
+-- B. INNER JOINS
+-- =========================================================
+
+-- Q47. Display student names with their department names.
+SELECT s.student_name, d.department_name
+FROM students s
+JOIN departments d
+ON s.department_id = d.department_id
+ORDER BY s.student_id;
+
+-- Q48. Display faculty names with their department names.
+SELECT f.faculty_name, d.department_name, f.designation
+FROM faculty f
+JOIN departments d
+ON f.department_id = d.department_id
+ORDER BY f.faculty_id;
+
+-- Q49. Display course names with their faculty names.
+SELECT c.course_name, c.course_code, f.faculty_name
+FROM courses c
+JOIN faculty f
+ON c.faculty_id = f.faculty_id
+ORDER BY c.course_id;
+
+-- Q50. Display student names with the courses they enrolled in.
+SELECT s.student_name, c.course_name, e.semester
+FROM enrollments e
+JOIN students s ON e.student_id = s.student_id
+JOIN courses c ON e.course_id = c.course_id
+ORDER BY s.student_name;
+
+-- Q51. Display student attendance details with course names.
+SELECT s.student_name, c.course_name,
+       a.total_classes, a.attended_classes
+FROM attendance a
+JOIN students s ON a.student_id = s.student_id
+JOIN courses c ON a.course_id = c.course_id
+ORDER BY s.student_id;
+
+-- Q52. Display student marks with exam and course names.
+SELECT s.student_name, ex.exam_name,
+       c.course_name, m.marks_obtained
+FROM marks m
+JOIN students s ON m.student_id = s.student_id
+JOIN exams ex ON m.exam_id = ex.exam_id
+JOIN courses c ON ex.course_id = c.course_id
+ORDER BY s.student_id;
+
+-- Q53. Display exam names with their course names.
+SELECT ex.exam_name, c.course_name
+FROM exams ex
+JOIN courses c
+ON ex.course_id = c.course_id
+ORDER BY ex.exam_id;
+
+
+-- =========================================================
+-- C. LEFT, RIGHT, SELF AND CROSS JOINS
+-- =========================================================
+
+-- Q54. Find students who have not enrolled in any course.
+SELECT s.student_id, s.student_name
+FROM students s
+LEFT JOIN enrollments e
+ON s.student_id = e.student_id
+WHERE e.enrollment_id IS NULL;
+
+-- Q55. Find courses that have no student enrollments.
+SELECT c.course_id, c.course_name
+FROM courses c
+LEFT JOIN enrollments e
+ON c.course_id = e.course_id
+WHERE e.enrollment_id IS NULL;
+
+-- Q56. Find students who have no attendance records.
+SELECT s.student_id, s.student_name
+FROM attendance a
+RIGHT JOIN students s
+ON a.student_id = s.student_id
+WHERE a.attendance_id IS NULL;
+
+-- Q57. SELF JOIN: Find pairs of students studying in the same department.
+SELECT s1.student_name AS student_1,
+       s2.student_name AS student_2,
+       d.department_name
+FROM students s1
+JOIN students s2
+ON s1.department_id = s2.department_id
+AND s1.student_id < s2.student_id
+JOIN departments d
+ON s1.department_id = d.department_id;
+
+-- Q58. CROSS JOIN: Pair every faculty member with every course.
+SELECT f.faculty_name, c.course_name
+FROM faculty f
+CROSS JOIN courses c
+ORDER BY f.faculty_id, c.course_id;
+
+
+-- =========================================================
+-- D. GROUP BY AND HAVING
+-- =========================================================
+
+-- Q59. Count the number of students in each department.
+SELECT d.department_name,
+       COUNT(s.student_id) AS total_students
+FROM departments d
+LEFT JOIN students s
+ON d.department_id = s.department_id
+GROUP BY d.department_id, d.department_name
+ORDER BY d.department_id;
+
+-- Q60. Count the number of courses offered by each department.
+SELECT d.department_name,
+       COUNT(c.course_id) AS total_courses
+FROM departments d
+LEFT JOIN courses c
+ON d.department_id = c.department_id
+GROUP BY d.department_id, d.department_name
+ORDER BY d.department_id;
+
+-- Q61. Count the number of students enrolled in each course.
+SELECT c.course_name,
+       COUNT(e.student_id) AS total_students
+FROM courses c
+LEFT JOIN enrollments e
+ON c.course_id = e.course_id
+GROUP BY c.course_id, c.course_name
+ORDER BY total_students DESC;
+
+-- Q62. Find the average marks for each exam.
+SELECT ex.exam_name,
+       ROUND(AVG(m.marks_obtained), 2) AS average_marks
+FROM exams ex
+JOIN marks m
+ON ex.exam_id = m.exam_id
+GROUP BY ex.exam_id, ex.exam_name
+ORDER BY ex.exam_id;
+
+-- Q63. Find the average attendance percentage for each course.
+SELECT c.course_name,
+       ROUND(AVG(a.attended_classes * 100.0 /
+       NULLIF(a.total_classes, 0)), 2) AS average_attendance
+FROM courses c
+JOIN attendance a
+ON c.course_id = a.course_id
+GROUP BY c.course_id, c.course_name
+ORDER BY average_attendance DESC;
+
+-- Q64. Find the total marks obtained by each student.
+SELECT s.student_name,
+       SUM(m.marks_obtained) AS total_marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+GROUP BY s.student_id, s.student_name
+ORDER BY total_marks DESC;
+
+-- Q65. HAVING: Find courses having more than one enrolled student.
+SELECT c.course_name,
+       COUNT(e.student_id) AS total_students
+FROM courses c
+JOIN enrollments e
+ON c.course_id = e.course_id
+GROUP BY c.course_id, c.course_name
+HAVING COUNT(e.student_id) > 1
+ORDER BY total_students DESC;
+
+-- Q66. HAVING: Find students whose average marks are above 80.
+SELECT s.student_name,
+       ROUND(AVG(m.marks_obtained), 2) AS average_marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+GROUP BY s.student_id, s.student_name
+HAVING AVG(m.marks_obtained) > 80
+ORDER BY average_marks DESC;
+
+
+-- =========================================================
+-- E. BUSINESS AND ACADEMIC ANALYSIS
+-- =========================================================
+
+-- Q67. Calculate attendance percentage for every student and course.
+SELECT s.student_name, c.course_name,
+       a.total_classes, a.attended_classes,
+       ROUND(a.attended_classes * 100.0 /
+       NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+FROM attendance a
+JOIN students s ON a.student_id = s.student_id
+JOIN courses c ON a.course_id = c.course_id
+ORDER BY s.student_id;
+
+-- Q68. Find the average marks and performance category of each student.
+SELECT s.student_name,
+       ROUND(AVG(m.marks_obtained), 2) AS average_marks,
+       CASE
+           WHEN AVG(m.marks_obtained) >= 90 THEN 'Excellent'
+           WHEN AVG(m.marks_obtained) >= 80 THEN 'Very Good'
+           WHEN AVG(m.marks_obtained) >= 70 THEN 'Good'
+           WHEN AVG(m.marks_obtained) >= 60 THEN 'Average'
+           ELSE 'Needs Improvement'
+       END AS performance
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+GROUP BY s.student_id, s.student_name
+ORDER BY average_marks DESC;
+
+-- Q69. Count the number of courses handled by each faculty member.
+SELECT f.faculty_name,
+       COUNT(c.course_id) AS total_courses
+FROM faculty f
+LEFT JOIN courses c
+ON f.faculty_id = c.faculty_id
+GROUP BY f.faculty_id, f.faculty_name
+ORDER BY total_courses DESC;
+
+-- Q70. Find the total number of enrollments in each semester.
+SELECT semester,
+       COUNT(*) AS total_enrollments
+FROM enrollments
+GROUP BY semester
+ORDER BY semester;
