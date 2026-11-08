@@ -1,0 +1,412 @@
+-- ============================================================
+-- PROJECT : SMART COLLEGE MANAGEMENT & ACADEMIC ANALYTICS SYSTEM
+-- DATABASE: smart_college
+-- ============================================================
+
+
+-- ============================================================
+-- 1. DATABASE CREATION
+-- ============================================================
+
+DROP DATABASE IF EXISTS smart_college;
+
+CREATE DATABASE smart_college;
+
+USE smart_college;
+
+
+-- ============================================================
+-- 2. CREATE DEPARTMENTS TABLE
+-- ============================================================
+
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(100) NOT NULL UNIQUE,
+    hod_name VARCHAR(100),
+    location VARCHAR(100)
+);
+
+
+-- ============================================================
+-- 3. CREATE STUDENTS TABLE
+-- ============================================================
+
+CREATE TABLE students (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_name VARCHAR(100) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(15),
+    department_id INT NOT NULL,
+    admission_year YEAR NOT NULL,
+
+    CONSTRAINT fk_student_department
+        FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+);
+
+
+-- ============================================================
+-- 4. CREATE FACULTY TABLE
+-- ============================================================
+
+CREATE TABLE faculty (
+    faculty_id INT PRIMARY KEY AUTO_INCREMENT,
+    faculty_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(15),
+    department_id INT NOT NULL,
+    designation VARCHAR(50),
+
+    CONSTRAINT fk_faculty_department
+        FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+);
+
+
+-- ============================================================
+-- 5. CREATE COURSES TABLE
+-- ============================================================
+
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_name VARCHAR(100) NOT NULL,
+    course_code VARCHAR(20) NOT NULL UNIQUE,
+    credits INT NOT NULL,
+    department_id INT NOT NULL,
+    faculty_id INT NOT NULL,
+
+    CONSTRAINT chk_course_credits
+        CHECK (credits BETWEEN 1 AND 6),
+
+    CONSTRAINT fk_course_department
+        FOREIGN KEY (department_id)
+        REFERENCES departments(department_id),
+
+    CONSTRAINT fk_course_faculty
+        FOREIGN KEY (faculty_id)
+        REFERENCES faculty(faculty_id)
+);
+
+
+-- ============================================================
+-- 6. CREATE ENROLLMENTS TABLE
+-- ============================================================
+
+CREATE TABLE enrollments (
+    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    semester INT NOT NULL,
+    enrollment_date DATE NOT NULL,
+
+    CONSTRAINT uq_student_course_semester
+        UNIQUE (student_id, course_id, semester),
+
+    CONSTRAINT fk_enrollment_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(student_id),
+
+    CONSTRAINT fk_enrollment_course
+        FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+);
+
+
+-- ============================================================
+-- 7. CREATE ATTENDANCE TABLE
+-- ============================================================
+
+CREATE TABLE attendance (
+    attendance_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    total_classes INT NOT NULL,
+    attended_classes INT NOT NULL,
+
+    CONSTRAINT chk_attendance
+        CHECK (
+            total_classes >= 0
+            AND attended_classes >= 0
+            AND attended_classes <= total_classes
+        ),
+
+    CONSTRAINT uq_attendance_student_course
+        UNIQUE (student_id, course_id),
+
+    CONSTRAINT fk_attendance_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(student_id),
+
+    CONSTRAINT fk_attendance_course
+        FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+);
+
+
+-- ============================================================
+-- 8. CREATE EXAMS TABLE
+-- ============================================================
+
+CREATE TABLE exams (
+    exam_id INT PRIMARY KEY AUTO_INCREMENT,
+    exam_name VARCHAR(100) NOT NULL,
+    course_id INT NOT NULL,
+    semester INT NOT NULL,
+    exam_date DATE NOT NULL,
+    max_marks INT NOT NULL DEFAULT 100,
+
+    CONSTRAINT chk_max_marks
+        CHECK (max_marks > 0),
+
+    CONSTRAINT fk_exam_course
+        FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+);
+
+
+-- ============================================================
+-- 9. CREATE MARKS TABLE
+-- ============================================================
+
+CREATE TABLE marks (
+    mark_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    exam_id INT NOT NULL,
+    marks_obtained DECIMAL(5,2) NOT NULL,
+
+    CONSTRAINT uq_student_exam
+        UNIQUE (student_id, exam_id),
+
+    CONSTRAINT chk_marks
+        CHECK (marks_obtained >= 0),
+
+    CONSTRAINT fk_marks_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(student_id),
+
+    CONSTRAINT fk_marks_exam
+        FOREIGN KEY (exam_id)
+        REFERENCES exams(exam_id)
+);
+
+
+-- ============================================================
+-- 10. INSERT DATA INTO DEPARTMENTS
+-- ============================================================
+
+INSERT INTO departments
+(department_name, hod_name, location)
+VALUES
+('Computer Science Engineering', 'Dr. Ravi Kumar', 'Block A'),
+('Artificial Intelligence', 'Dr. Suresh', 'Block B'),
+('Information Technology', 'Dr. Lakshmi', 'Block C'),
+('Electronics and Communication', 'Dr. Prasad', 'Block D');
+
+
+-- ============================================================
+-- 11. INSERT DATA INTO STUDENTS
+-- ============================================================
+
+INSERT INTO students
+(student_name, gender, email, phone, department_id, admission_year)
+VALUES
+('Durga Bhavani', 'Female', 'durga@gmail.com', '9876500001', 1, 2025),
+('Ravi Kumar', 'Male', 'ravi@gmail.com', '9876500002', 1, 2025),
+('Sneha Reddy', 'Female', 'sneha@gmail.com', '9876500003', 2, 2025),
+('Arjun Varma', 'Male', 'arjun@gmail.com', '9876500004', 2, 2025),
+('Priya Sharma', 'Female', 'priya@gmail.com', '9876500005', 3, 2025),
+('Karthik Nair', 'Male', 'karthik@gmail.com', '9876500006', 3, 2025),
+('Meena Iyer', 'Female', 'meena@gmail.com', '9876500007', 4, 2025),
+('Suresh Babu', 'Male', 'suresh@gmail.com', '9876500008', 4, 2025);
+
+
+-- ============================================================
+-- 12. INSERT DATA INTO FACULTY
+-- ============================================================
+
+INSERT INTO faculty
+(faculty_name, email, phone, department_id, designation)
+VALUES
+('Ramesh Kumar', 'ramesh@college.com', '9000000001', 1, 'Professor'),
+('Lakshmi Devi', 'lakshmi@college.com', '9000000002', 2, 'Associate Professor'),
+('Prasad Rao', 'prasad@college.com', '9000000003', 3, 'Assistant Professor'),
+('Srinivas Reddy', 'srinivas@college.com', '9000000004', 4, 'Professor');
+
+
+-- ============================================================
+-- 13. INSERT DATA INTO COURSES
+-- ============================================================
+
+INSERT INTO courses
+(course_name, course_code, credits, department_id, faculty_id)
+VALUES
+('Database Management Systems', 'CSE301', 4, 1, 1),
+('Data Structures', 'CSE302', 4, 1, 1),
+('Artificial Intelligence', 'AIML301', 4, 2, 2),
+('Machine Learning', 'AIML302', 3, 2, 2),
+('Computer Networks', 'IT301', 3, 3, 3),
+('Digital Electronics', 'ECE301', 4, 4, 4);
+
+
+-- ============================================================
+-- 14. INSERT DATA INTO ENROLLMENTS
+-- ============================================================
+
+INSERT INTO enrollments
+(student_id, course_id, semester, enrollment_date)
+VALUES
+(1, 1, 3, '2026-07-01'),
+(1, 2, 3, '2026-07-01'),
+(2, 1, 3, '2026-07-01'),
+(2, 2, 3, '2026-07-01'),
+(3, 3, 3, '2026-07-01'),
+(3, 4, 3, '2026-07-01'),
+(4, 3, 3, '2026-07-01'),
+(4, 4, 3, '2026-07-01'),
+(5, 5, 3, '2026-07-01'),
+(6, 5, 3, '2026-07-01'),
+(7, 6, 3, '2026-07-01'),
+(8, 6, 3, '2026-07-01');
+
+
+-- ============================================================
+-- 15. INSERT DATA INTO ATTENDANCE
+-- ============================================================
+
+INSERT INTO attendance
+(student_id, course_id, total_classes, attended_classes)
+VALUES
+(1, 1, 50, 46),
+(1, 2, 50, 42),
+(2, 1, 50, 40),
+(2, 2, 50, 45),
+(3, 3, 50, 48),
+(3, 4, 50, 44),
+(4, 3, 50, 39),
+(4, 4, 50, 43),
+(5, 5, 50, 47),
+(6, 5, 50, 38),
+(7, 6, 50, 45),
+(8, 6, 50, 41);
+
+
+-- ============================================================
+-- 16. INSERT DATA INTO EXAMS
+-- ============================================================
+
+INSERT INTO exams
+(exam_name, course_id, semester, exam_date, max_marks)
+VALUES
+('Mid Term 1', 1, 3, '2026-08-10', 100),
+('Mid Term 1', 2, 3, '2026-08-12', 100),
+('Mid Term 1', 3, 3, '2026-08-14', 100),
+('Mid Term 1', 4, 3, '2026-08-16', 100),
+('Mid Term 1', 5, 3, '2026-08-18', 100),
+('Mid Term 1', 6, 3, '2026-08-20', 100);
+
+
+-- ============================================================
+-- 17. INSERT DATA INTO MARKS
+-- ============================================================
+
+INSERT INTO marks
+(student_id, exam_id, marks_obtained)
+VALUES
+(1, 1, 92),
+(2, 1, 85),
+(1, 2, 88),
+(2, 2, 79),
+(3, 3, 95),
+(4, 3, 82),
+(3, 4, 91),
+(4, 4, 76),
+(5, 5, 89),
+(6, 5, 80),
+(7, 6, 93),
+(8, 6, 84);
+
+
+-- ============================================================
+-- 18. CREATE ATTENDANCE ANALYTICS VIEW
+-- ============================================================
+
+CREATE VIEW attendance_analytics AS
+SELECT
+    s.student_id,
+    s.student_name,
+    c.course_name,
+    a.total_classes,
+    a.attended_classes,
+    ROUND(
+        (a.attended_classes / NULLIF(a.total_classes, 0)) * 100,
+        2
+    ) AS attendance_percentage
+FROM attendance a
+JOIN students s ON a.student_id = s.student_id
+JOIN courses c ON a.course_id = c.course_id;
+
+
+-- ============================================================
+-- 19. CREATE STUDENT PERFORMANCE VIEW
+-- ============================================================
+
+CREATE VIEW student_performance AS
+SELECT
+    s.student_id,
+    s.student_name,
+    c.course_name,
+    e.exam_name,
+    m.marks_obtained,
+    e.max_marks,
+    ROUND((m.marks_obtained / e.max_marks) * 100, 2)
+        AS percentage,
+    CASE
+        WHEN m.marks_obtained >= 90 THEN 'Excellent'
+        WHEN m.marks_obtained >= 75 THEN 'Very Good'
+        WHEN m.marks_obtained >= 60 THEN 'Good'
+        WHEN m.marks_obtained >= 40 THEN 'Pass'
+        ELSE 'Fail'
+    END AS performance
+FROM marks m
+JOIN students s ON m.student_id = s.student_id
+JOIN exams e ON m.exam_id = e.exam_id
+JOIN courses c ON e.course_id = c.course_id;
+
+
+-- ============================================================
+-- 20. CREATE DEPARTMENT SUMMARY VIEW
+-- ============================================================
+
+CREATE VIEW department_summary AS
+SELECT
+    d.department_id,
+    d.department_name,
+    COUNT(DISTINCT s.student_id) AS total_students,
+    COUNT(DISTINCT f.faculty_id) AS total_faculty,
+    COUNT(DISTINCT c.course_id) AS total_courses
+FROM departments d
+LEFT JOIN students s ON d.department_id = s.department_id
+LEFT JOIN faculty f ON d.department_id = f.department_id
+LEFT JOIN courses c ON d.department_id = c.department_id
+GROUP BY d.department_id, d.department_name;
+
+
+-- ============================================================
+-- 21. DATABASE VERIFICATION
+-- ============================================================
+
+SHOW TABLES;
+
+SELECT * FROM departments;
+SELECT * FROM students;
+SELECT * FROM faculty;
+SELECT * FROM courses;
+SELECT * FROM enrollments;
+SELECT * FROM attendance;
+SELECT * FROM exams;
+SELECT * FROM marks;
+
+SELECT * FROM attendance_analytics;
+SELECT * FROM student_performance;
+SELECT * FROM department_summary;
