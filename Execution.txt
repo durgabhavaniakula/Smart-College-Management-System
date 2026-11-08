@@ -1,0 +1,2221 @@
+mysql> USE smart_college;
+Database changed
+mysql>
+mysql> -- =========================================================
+mysql> -- SIMPLE QUERIES
+mysql> -- Q1 - Q40
+mysql> -- =========================================================
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- 1. SELECT * AND SELECTING COLUMNS
+mysql> -- =========================================================
+mysql>
+mysql> -- Q1. Display all departments.
+mysql> SELECT * FROM departments;
++---------------+-------------------------------+----------------+----------+
+| department_id | department_name               | hod_name       | location |
++---------------+-------------------------------+----------------+----------+
+|             1 | Computer Science Engineering  | Dr. Ravi Kumar | Block A  |
+|             2 | Artificial Intelligence       | Dr. Suresh     | Block B  |
+|             3 | Information Technology        | Dr. Lakshmi    | Block C  |
+|             4 | Electronics and Communication | Dr. Prasad     | Block D  |
++---------------+-------------------------------+----------------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q2. Display all students.
+mysql> SELECT * FROM students;
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+| student_id | student_name  | gender | email             | phone      | department_id | admission_year |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+|          1 | Durga Bhavani | Female | durga@gmail.com   | 9876500001 |             1 |           2025 |
+|          2 | Ravi Kumar    | Male   | ravi@gmail.com    | 9876500002 |             1 |           2025 |
+|          3 | Sneha Reddy   | Female | sneha@gmail.com   | 9876500003 |             2 |           2025 |
+|          4 | Arjun Varma   | Male   | arjun@gmail.com   | 9876500004 |             2 |           2025 |
+|          5 | Priya Sharma  | Female | priya@gmail.com   | 9876500005 |             3 |           2025 |
+|          6 | Karthik Nair  | Male   | karthik@gmail.com | 9876500006 |             3 |           2025 |
+|          7 | Meena Iyer    | Female | meena@gmail.com   | 9876500007 |             4 |           2025 |
+|          8 | Suresh Babu   | Male   | suresh@gmail.com  | 9876500008 |             4 |           2025 |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q3. Display all faculty members.
+mysql> SELECT * FROM faculty;
++------------+----------------+----------------------+------------+---------------+---------------------+
+| faculty_id | faculty_name   | email                | phone      | department_id | designation         |
++------------+----------------+----------------------+------------+---------------+---------------------+
+|          1 | Ramesh Kumar   | ramesh@college.com   | 9000000001 |             1 | Professor           |
+|          2 | Lakshmi Devi   | lakshmi@college.com  | 9000000002 |             2 | Associate Professor |
+|          3 | Prasad Rao     | prasad@college.com   | 9000000003 |             3 | Assistant Professor |
+|          4 | Srinivas Reddy | srinivas@college.com | 9000000004 |             4 | Professor           |
++------------+----------------+----------------------+------------+---------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q4. Display all courses.
+mysql> SELECT * FROM courses;
++-----------+-----------------------------+-------------+---------+---------------+------------+
+| course_id | course_name                 | course_code | credits | department_id | faculty_id |
++-----------+-----------------------------+-------------+---------+---------------+------------+
+|         1 | Database Management Systems | CSE301      |       4 |             1 |          1 |
+|         2 | Data Structures             | CSE302      |       4 |             1 |          1 |
+|         3 | Artificial Intelligence     | AIML301     |       4 |             2 |          2 |
+|         4 | Machine Learning            | AIML302     |       3 |             2 |          2 |
+|         5 | Computer Networks           | IT301       |       3 |             3 |          3 |
+|         6 | Digital Electronics         | ECE301      |       4 |             4 |          4 |
++-----------+-----------------------------+-------------+---------+---------------+------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q5. Display all enrollments.
+mysql> SELECT * FROM enrollments;
++---------------+------------+-----------+----------+-----------------+
+| enrollment_id | student_id | course_id | semester | enrollment_date |
++---------------+------------+-----------+----------+-----------------+
+|             1 |          1 |         1 |        3 | 2026-07-01      |
+|             2 |          1 |         2 |        3 | 2026-07-01      |
+|             3 |          2 |         1 |        3 | 2026-07-01      |
+|             4 |          2 |         2 |        3 | 2026-07-01      |
+|             5 |          3 |         3 |        3 | 2026-07-01      |
+|             6 |          3 |         4 |        3 | 2026-07-01      |
+|             7 |          4 |         3 |        3 | 2026-07-01      |
+|             8 |          4 |         4 |        3 | 2026-07-01      |
+|             9 |          5 |         5 |        3 | 2026-07-01      |
+|            10 |          6 |         5 |        3 | 2026-07-01      |
+|            11 |          7 |         6 |        3 | 2026-07-01      |
+|            12 |          8 |         6 |        3 | 2026-07-01      |
++---------------+------------+-----------+----------+-----------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q6. Display all attendance records.
+mysql> SELECT * FROM attendance;
++---------------+------------+-----------+---------------+------------------+
+| attendance_id | student_id | course_id | total_classes | attended_classes |
++---------------+------------+-----------+---------------+------------------+
+|             1 |          1 |         1 |            50 |               46 |
+|             2 |          1 |         2 |            50 |               42 |
+|             3 |          2 |         1 |            50 |               40 |
+|             4 |          2 |         2 |            50 |               45 |
+|             5 |          3 |         3 |            50 |               48 |
+|             6 |          3 |         4 |            50 |               44 |
+|             7 |          4 |         3 |            50 |               39 |
+|             8 |          4 |         4 |            50 |               43 |
+|             9 |          5 |         5 |            50 |               47 |
+|            10 |          6 |         5 |            50 |               38 |
+|            11 |          7 |         6 |            50 |               45 |
+|            12 |          8 |         6 |            50 |               41 |
++---------------+------------+-----------+---------------+------------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q7. Display all examinations.
+mysql> SELECT * FROM exams;
++---------+------------+-----------+----------+------------+-----------+
+| exam_id | exam_name  | course_id | semester | exam_date  | max_marks |
++---------+------------+-----------+----------+------------+-----------+
+|       1 | Mid Term 1 |         1 |        3 | 2026-08-10 |       100 |
+|       2 | Mid Term 1 |         2 |        3 | 2026-08-12 |       100 |
+|       3 | Mid Term 1 |         3 |        3 | 2026-08-14 |       100 |
+|       4 | Mid Term 1 |         4 |        3 | 2026-08-16 |       100 |
+|       5 | Mid Term 1 |         5 |        3 | 2026-08-18 |       100 |
+|       6 | Mid Term 1 |         6 |        3 | 2026-08-20 |       100 |
++---------+------------+-----------+----------+------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q8. Display all student marks.
+mysql> SELECT * FROM marks;
++---------+------------+---------+----------------+
+| mark_id | student_id | exam_id | marks_obtained |
++---------+------------+---------+----------------+
+|       1 |          1 |       1 |          92.00 |
+|       2 |          2 |       1 |          85.00 |
+|       3 |          1 |       2 |          88.00 |
+|       4 |          2 |       2 |          79.00 |
+|       5 |          3 |       3 |          95.00 |
+|       6 |          4 |       3 |          82.00 |
+|       7 |          3 |       4 |          91.00 |
+|       8 |          4 |       4 |          76.00 |
+|       9 |          5 |       5 |          89.00 |
+|      10 |          6 |       5 |          80.00 |
+|      11 |          7 |       6 |          93.00 |
+|      12 |          8 |       6 |          84.00 |
++---------+------------+---------+----------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q9. Display student names and email addresses.
+mysql> SELECT student_name, email FROM students;
++---------------+-------------------+
+| student_name  | email             |
++---------------+-------------------+
+| Durga Bhavani | durga@gmail.com   |
+| Ravi Kumar    | ravi@gmail.com    |
+| Sneha Reddy   | sneha@gmail.com   |
+| Arjun Varma   | arjun@gmail.com   |
+| Priya Sharma  | priya@gmail.com   |
+| Karthik Nair  | karthik@gmail.com |
+| Meena Iyer    | meena@gmail.com   |
+| Suresh Babu   | suresh@gmail.com  |
++---------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q10. Display faculty names and email addresses.
+mysql> SELECT faculty_name, email FROM faculty;
++----------------+----------------------+
+| faculty_name   | email                |
++----------------+----------------------+
+| Ramesh Kumar   | ramesh@college.com   |
+| Lakshmi Devi   | lakshmi@college.com  |
+| Prasad Rao     | prasad@college.com   |
+| Srinivas Reddy | srinivas@college.com |
++----------------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q11. Display course names and credits.
+mysql> SELECT course_name, credits FROM courses;
++-----------------------------+---------+
+| course_name                 | credits |
++-----------------------------+---------+
+| Database Management Systems |       4 |
+| Data Structures             |       4 |
+| Artificial Intelligence     |       4 |
+| Machine Learning            |       3 |
+| Computer Networks           |       3 |
+| Digital Electronics         |       4 |
++-----------------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q12. Display department names.
+mysql> SELECT department_name FROM departments;
++-------------------------------+
+| department_name               |
++-------------------------------+
+| Artificial Intelligence       |
+| Computer Science Engineering  |
+| Electronics and Communication |
+| Information Technology        |
++-------------------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q13. Display student names and phone numbers.
+mysql> SELECT student_name, phone FROM students;
++---------------+------------+
+| student_name  | phone      |
++---------------+------------+
+| Durga Bhavani | 9876500001 |
+| Ravi Kumar    | 9876500002 |
+| Sneha Reddy   | 9876500003 |
+| Arjun Varma   | 9876500004 |
+| Priya Sharma  | 9876500005 |
+| Karthik Nair  | 9876500006 |
+| Meena Iyer    | 9876500007 |
+| Suresh Babu   | 9876500008 |
++---------------+------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- 2. FILTERING (WHERE, AND, OR, NOT, LIKE, BETWEEN, IN)
+mysql> -- =========================================================
+mysql>
+mysql> -- Q14. Display students from department ID 1.
+mysql> SELECT student_id, student_name, department_id
+    -> FROM students
+    -> WHERE department_id = 1;
++------------+---------------+---------------+
+| student_id | student_name  | department_id |
++------------+---------------+---------------+
+|          1 | Durga Bhavani |             1 |
+|          2 | Ravi Kumar    |             1 |
++------------+---------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q15. Display students admitted in 2025.
+mysql> SELECT student_name, admission_year
+    -> FROM students
+    -> WHERE admission_year = 2025;
++---------------+----------------+
+| student_name  | admission_year |
++---------------+----------------+
+| Durga Bhavani |           2025 |
+| Ravi Kumar    |           2025 |
+| Sneha Reddy   |           2025 |
+| Arjun Varma   |           2025 |
+| Priya Sharma  |           2025 |
+| Karthik Nair  |           2025 |
+| Meena Iyer    |           2025 |
+| Suresh Babu   |           2025 |
++---------------+----------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q16. Display faculty members from department ID 1.
+mysql> SELECT faculty_name, department_id
+    -> FROM faculty
+    -> WHERE department_id = 1;
++--------------+---------------+
+| faculty_name | department_id |
++--------------+---------------+
+| Ramesh Kumar |             1 |
++--------------+---------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q17. Display courses having more than 3 credits.
+mysql> SELECT course_name, credits
+    -> FROM courses
+    -> WHERE credits > 3;
++-----------------------------+---------+
+| course_name                 | credits |
++-----------------------------+---------+
+| Database Management Systems |       4 |
+| Data Structures             |       4 |
+| Artificial Intelligence     |       4 |
+| Digital Electronics         |       4 |
++-----------------------------+---------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q18. AND: Display students admitted in 2025
+mysql> -- and belonging to department ID 1.
+mysql> SELECT student_name, admission_year, department_id
+    -> FROM students
+    -> WHERE admission_year = 2025
+    -> AND department_id = 1;
++---------------+----------------+---------------+
+| student_name  | admission_year | department_id |
++---------------+----------------+---------------+
+| Durga Bhavani |           2025 |             1 |
+| Ravi Kumar    |           2025 |             1 |
++---------------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q19. OR: Display students from department ID 1 or 2.
+mysql> SELECT student_name, department_id
+    -> FROM students
+    -> WHERE department_id = 1 OR department_id = 2;
++---------------+---------------+
+| student_name  | department_id |
++---------------+---------------+
+| Durga Bhavani |             1 |
+| Ravi Kumar    |             1 |
+| Sneha Reddy   |             2 |
+| Arjun Varma   |             2 |
++---------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q20. BETWEEN: Display students admitted between 2024 and 2026.
+mysql> SELECT student_name, admission_year
+    -> FROM students
+    -> WHERE admission_year BETWEEN 2024 AND 2026;
++---------------+----------------+
+| student_name  | admission_year |
++---------------+----------------+
+| Durga Bhavani |           2025 |
+| Ravi Kumar    |           2025 |
+| Sneha Reddy   |           2025 |
+| Arjun Varma   |           2025 |
+| Priya Sharma  |           2025 |
+| Karthik Nair  |           2025 |
+| Meena Iyer    |           2025 |
+| Suresh Babu   |           2025 |
++---------------+----------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q21. LIKE: Display students whose names start with A.
+mysql> SELECT student_id, student_name
+    -> FROM students
+    -> WHERE student_name LIKE 'A%';
++------------+--------------+
+| student_id | student_name |
++------------+--------------+
+|          4 | Arjun Varma  |
++------------+--------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q22. LIKE: Display faculty members whose names start with S.
+mysql> SELECT faculty_name
+    -> FROM faculty
+    -> WHERE faculty_name LIKE 'S%';
++----------------+
+| faculty_name   |
++----------------+
+| Srinivas Reddy |
++----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q23. IN: Display students belonging to department ID 1, 2 or 3.
+mysql> SELECT student_name, department_id
+    -> FROM students
+    -> WHERE department_id IN (1, 2, 3);
++---------------+---------------+
+| student_name  | department_id |
++---------------+---------------+
+| Durga Bhavani |             1 |
+| Ravi Kumar    |             1 |
+| Sneha Reddy   |             2 |
+| Arjun Varma   |             2 |
+| Priya Sharma  |             3 |
+| Karthik Nair  |             3 |
++---------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q24. NOT IN: Display students who do not belong
+mysql> -- to department ID 1 or 2.
+mysql> SELECT student_name, department_id
+    -> FROM students
+    -> WHERE department_id NOT IN (1, 2);
++--------------+---------------+
+| student_name | department_id |
++--------------+---------------+
+| Priya Sharma |             3 |
+| Karthik Nair |             3 |
+| Meena Iyer   |             4 |
+| Suresh Babu  |             4 |
++--------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q25. Display attendance records having less than 90%
+mysql> -- attendance.
+mysql> SELECT student_id, total_classes, attended_classes
+    -> FROM attendance
+    -> WHERE (attended_classes / NULLIF(total_classes, 0)) * 100 < 90;
++------------+---------------+------------------+
+| student_id | total_classes | attended_classes |
++------------+---------------+------------------+
+|          1 |            50 |               42 |
+|          2 |            50 |               40 |
+|          3 |            50 |               44 |
+|          4 |            50 |               39 |
+|          4 |            50 |               43 |
+|          6 |            50 |               38 |
+|          8 |            50 |               41 |
++------------+---------------+------------------+
+7 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q26. Display marks greater than or equal to 80.
+mysql> SELECT student_id, exam_id, marks_obtained
+    -> FROM marks
+    -> WHERE marks_obtained >= 80;
++------------+---------+----------------+
+| student_id | exam_id | marks_obtained |
++------------+---------+----------------+
+|          1 |       1 |          92.00 |
+|          2 |       1 |          85.00 |
+|          1 |       2 |          88.00 |
+|          3 |       3 |          95.00 |
+|          4 |       3 |          82.00 |
+|          3 |       4 |          91.00 |
+|          5 |       5 |          89.00 |
+|          6 |       5 |          80.00 |
+|          7 |       6 |          93.00 |
+|          8 |       6 |          84.00 |
++------------+---------+----------------+
+10 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- 3. SORTING, LIMIT AND DISTINCT
+mysql> -- =========================================================
+mysql>
+mysql> -- Q27. Display students in alphabetical order.
+mysql> SELECT student_name
+    -> FROM students
+    -> ORDER BY student_name ASC;
++---------------+
+| student_name  |
++---------------+
+| Arjun Varma   |
+| Durga Bhavani |
+| Karthik Nair  |
+| Meena Iyer    |
+| Priya Sharma  |
+| Ravi Kumar    |
+| Sneha Reddy   |
+| Suresh Babu   |
++---------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q28. Display students in descending order of admission year.
+mysql> SELECT student_name, admission_year
+    -> FROM students
+    -> ORDER BY admission_year DESC;
++---------------+----------------+
+| student_name  | admission_year |
++---------------+----------------+
+| Durga Bhavani |           2025 |
+| Ravi Kumar    |           2025 |
+| Sneha Reddy   |           2025 |
+| Arjun Varma   |           2025 |
+| Priya Sharma  |           2025 |
+| Karthik Nair  |           2025 |
+| Meena Iyer    |           2025 |
+| Suresh Babu   |           2025 |
++---------------+----------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q29. Display the top 3 students based on marks.
+mysql> SELECT s.student_name, m.marks_obtained
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> ORDER BY m.marks_obtained DESC
+    -> LIMIT 3;
++---------------+----------------+
+| student_name  | marks_obtained |
++---------------+----------------+
+| Sneha Reddy   |          95.00 |
+| Meena Iyer    |          93.00 |
+| Durga Bhavani |          92.00 |
++---------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q30. Display courses in descending order of credits.
+mysql> SELECT course_name, credits
+    -> FROM courses
+    -> ORDER BY credits DESC;
++-----------------------------+---------+
+| course_name                 | credits |
++-----------------------------+---------+
+| Database Management Systems |       4 |
+| Data Structures             |       4 |
+| Artificial Intelligence     |       4 |
+| Digital Electronics         |       4 |
+| Machine Learning            |       3 |
+| Computer Networks           |       3 |
++-----------------------------+---------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q31. Display different department IDs without repeats.
+mysql> SELECT DISTINCT department_id
+    -> FROM students
+    -> ORDER BY department_id;
++---------------+
+| department_id |
++---------------+
+|             1 |
+|             2 |
+|             3 |
+|             4 |
++---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- 4. DATA COMMANDS
+mysql> -- INSERT, UPDATE, DELETE, ALTER, RENAME, DROP
+mysql> -- Practising on a copy of the students table
+mysql> -- =========================================================
+mysql>
+mysql> -- Q32. Create a practice copy of the students table.
+mysql> DROP TABLE IF EXISTS practice_students;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE practice_students AS
+    -> SELECT * FROM students;
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM practice_students;
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+| student_id | student_name  | gender | email             | phone      | department_id | admission_year |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+|          1 | Durga Bhavani | Female | durga@gmail.com   | 9876500001 |             1 |           2025 |
+|          2 | Ravi Kumar    | Male   | ravi@gmail.com    | 9876500002 |             1 |           2025 |
+|          3 | Sneha Reddy   | Female | sneha@gmail.com   | 9876500003 |             2 |           2025 |
+|          4 | Arjun Varma   | Male   | arjun@gmail.com   | 9876500004 |             2 |           2025 |
+|          5 | Priya Sharma  | Female | priya@gmail.com   | 9876500005 |             3 |           2025 |
+|          6 | Karthik Nair  | Male   | karthik@gmail.com | 9876500006 |             3 |           2025 |
+|          7 | Meena Iyer    | Female | meena@gmail.com   | 9876500007 |             4 |           2025 |
+|          8 | Suresh Babu   | Male   | suresh@gmail.com  | 9876500008 |             4 |           2025 |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q33. INSERT: Add a new student to the practice table.
+mysql> INSERT INTO practice_students
+    -> (student_id, student_name, gender, email, phone,
+    ->  department_id, admission_year)
+    -> VALUES
+    -> (999, 'Practice Student', 'Male', 'practice@gmail.com',
+    ->  '9876543210', 1, 2026);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM practice_students
+    -> WHERE student_id = 999;
++------------+------------------+--------+--------------------+------------+---------------+----------------+
+| student_id | student_name     | gender | email              | phone      | department_id | admission_year |
++------------+------------------+--------+--------------------+------------+---------------+----------------+
+|        999 | Practice Student | Male   | practice@gmail.com | 9876543210 |             1 |           2026 |
++------------+------------------+--------+--------------------+------------+---------------+----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q34. UPDATE: Change the admission year of practice student.
+mysql> UPDATE practice_students
+    -> SET admission_year = 2025
+    -> WHERE student_id = 999;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> SELECT student_name, admission_year
+    -> FROM practice_students
+    -> WHERE student_id = 999;
++------------------+----------------+
+| student_name     | admission_year |
++------------------+----------------+
+| Practice Student |           2025 |
++------------------+----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q35. UPDATE: Change the phone number of students
+mysql> -- belonging to department ID 1.
+mysql> UPDATE practice_students
+    -> SET phone = '9999999999'
+    -> WHERE department_id = 1;
+Query OK, 3 rows affected (0.00 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql>
+mysql> SELECT student_id, student_name, phone
+    -> FROM practice_students
+    -> WHERE department_id = 1;
++------------+------------------+------------+
+| student_id | student_name     | phone      |
++------------+------------------+------------+
+|          1 | Durga Bhavani    | 9999999999 |
+|          2 | Ravi Kumar       | 9999999999 |
+|        999 | Practice Student | 9999999999 |
++------------+------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q36. DELETE: Remove the practice student.
+mysql> DELETE FROM practice_students
+    -> WHERE student_id = 999;
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM practice_students
+    -> WHERE student_id = 999;
+Empty set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q37. ALTER TABLE: Add a new column.
+mysql> ALTER TABLE practice_students
+    -> ADD COLUMN student_status VARCHAR(20) DEFAULT 'Active';
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT student_id, student_name, student_status
+    -> FROM practice_students
+    -> LIMIT 5;
++------------+---------------+----------------+
+| student_id | student_name  | student_status |
++------------+---------------+----------------+
+|          1 | Durga Bhavani | Active         |
+|          2 | Ravi Kumar    | Active         |
+|          3 | Sneha Reddy   | Active         |
+|          4 | Arjun Varma   | Active         |
+|          5 | Priya Sharma  | Active         |
++------------+---------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q38. RENAME COLUMN: Rename student_status to status.
+mysql> ALTER TABLE practice_students
+    -> RENAME COLUMN student_status TO status;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT student_id, student_name, status
+    -> FROM practice_students
+    -> LIMIT 5;
++------------+---------------+--------+
+| student_id | student_name  | status |
++------------+---------------+--------+
+|          1 | Durga Bhavani | Active |
+|          2 | Ravi Kumar    | Active |
+|          3 | Sneha Reddy   | Active |
+|          4 | Arjun Varma   | Active |
+|          5 | Priya Sharma  | Active |
++------------+---------------+--------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q39. RENAME TABLE: Rename practice_students
+mysql> -- to practice_student_records.
+mysql> RENAME TABLE practice_students
+    -> TO practice_student_records;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> SHOW TABLES;
++--------------------------+
+| Tables_in_smart_college  |
++--------------------------+
+| attendance               |
+| attendance_analytics     |
+| courses                  |
+| department_summary       |
+| departments              |
+| enrollments              |
+| exams                    |
+| faculty                  |
+| marks                    |
+| practice_student_records |
+| student_performance      |
+| students                 |
++--------------------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q40. DROP TABLE: Delete the practice table.
+mysql> DROP TABLE practice_student_records;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_smart_college |
++-------------------------+
+| attendance              |
+| attendance_analytics    |
+| courses                 |
+| department_summary      |
+| departments             |
+| enrollments             |
+| exams                   |
+| faculty                 |
+| marks                   |
+| student_performance     |
+| students                |
++-------------------------+
+11 rows in set (0.00 sec)
+
+mysql> # SMART COLLEGE MANAGEMENT & ACADEMIC ANALYTICS SYSTEM
+mysql> ## MEDIUM QUERIES — Q41 to Q70
+mysql> ### Aggregate Functions, Joins, GROUP BY, HAVING and Academic Analysis
+mysql>
+mysql> USE smart_college;
+Database changed
+mysql>
+mysql> -- =========================================================
+mysql> -- A. AGGREGATE FUNCTIONS (COUNT, SUM, AVG, MIN, MAX)
+mysql> -- =========================================================
+mysql>
+mysql> -- Q41. Count the total number of students.
+mysql> SELECT COUNT(*) AS total_students
+    -> FROM students;
++----------------+
+| total_students |
++----------------+
+|              8 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q42. Count the total number of faculty members.
+mysql> SELECT COUNT(*) AS total_faculty
+    -> FROM faculty;
++---------------+
+| total_faculty |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q43. Count the total number of courses.
+mysql> SELECT COUNT(*) AS total_courses
+    -> FROM courses;
++---------------+
+| total_courses |
++---------------+
+|             6 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q44. Count the total number of enrollments.
+mysql> SELECT COUNT(*) AS total_enrollments
+    -> FROM enrollments;
++-------------------+
+| total_enrollments |
++-------------------+
+|                12 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q45. Find the average marks obtained by students.
+mysql> SELECT ROUND(AVG(marks_obtained), 2) AS average_marks
+    -> FROM marks;
++---------------+
+| average_marks |
++---------------+
+|         86.17 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- Q46. Find the highest and lowest marks.
+mysql> SELECT MAX(marks_obtained) AS highest_marks,
+    ->        MIN(marks_obtained) AS lowest_marks
+    -> FROM marks;
++---------------+--------------+
+| highest_marks | lowest_marks |
++---------------+--------------+
+|         95.00 |        76.00 |
++---------------+--------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- B. INNER JOINS
+mysql> -- =========================================================
+mysql>
+mysql> -- Q47. Display student names with their department names.
+mysql> SELECT s.student_name, d.department_name
+    -> FROM students s
+    -> JOIN departments d
+    -> ON s.department_id = d.department_id
+    -> ORDER BY s.student_id;
++---------------+-------------------------------+
+| student_name  | department_name               |
++---------------+-------------------------------+
+| Durga Bhavani | Computer Science Engineering  |
+| Ravi Kumar    | Computer Science Engineering  |
+| Sneha Reddy   | Artificial Intelligence       |
+| Arjun Varma   | Artificial Intelligence       |
+| Priya Sharma  | Information Technology        |
+| Karthik Nair  | Information Technology        |
+| Meena Iyer    | Electronics and Communication |
+| Suresh Babu   | Electronics and Communication |
++---------------+-------------------------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q48. Display faculty names with their department names.
+mysql> SELECT f.faculty_name, d.department_name, f.designation
+    -> FROM faculty f
+    -> JOIN departments d
+    -> ON f.department_id = d.department_id
+    -> ORDER BY f.faculty_id;
++----------------+-------------------------------+---------------------+
+| faculty_name   | department_name               | designation         |
++----------------+-------------------------------+---------------------+
+| Ramesh Kumar   | Computer Science Engineering  | Professor           |
+| Lakshmi Devi   | Artificial Intelligence       | Associate Professor |
+| Prasad Rao     | Information Technology        | Assistant Professor |
+| Srinivas Reddy | Electronics and Communication | Professor           |
++----------------+-------------------------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q49. Display course names with their faculty names.
+mysql> SELECT c.course_name, c.course_code, f.faculty_name
+    -> FROM courses c
+    -> JOIN faculty f
+    -> ON c.faculty_id = f.faculty_id
+    -> ORDER BY c.course_id;
++-----------------------------+-------------+----------------+
+| course_name                 | course_code | faculty_name   |
++-----------------------------+-------------+----------------+
+| Database Management Systems | CSE301      | Ramesh Kumar   |
+| Data Structures             | CSE302      | Ramesh Kumar   |
+| Artificial Intelligence     | AIML301     | Lakshmi Devi   |
+| Machine Learning            | AIML302     | Lakshmi Devi   |
+| Computer Networks           | IT301       | Prasad Rao     |
+| Digital Electronics         | ECE301      | Srinivas Reddy |
++-----------------------------+-------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q50. Display student names with the courses they enrolled in.
+mysql> SELECT s.student_name, c.course_name, e.semester
+    -> FROM enrollments e
+    -> JOIN students s ON e.student_id = s.student_id
+    -> JOIN courses c ON e.course_id = c.course_id
+    -> ORDER BY s.student_name;
++---------------+-----------------------------+----------+
+| student_name  | course_name                 | semester |
++---------------+-----------------------------+----------+
+| Arjun Varma   | Artificial Intelligence     |        3 |
+| Arjun Varma   | Machine Learning            |        3 |
+| Durga Bhavani | Database Management Systems |        3 |
+| Durga Bhavani | Data Structures             |        3 |
+| Karthik Nair  | Computer Networks           |        3 |
+| Meena Iyer    | Digital Electronics         |        3 |
+| Priya Sharma  | Computer Networks           |        3 |
+| Ravi Kumar    | Database Management Systems |        3 |
+| Ravi Kumar    | Data Structures             |        3 |
+| Sneha Reddy   | Artificial Intelligence     |        3 |
+| Sneha Reddy   | Machine Learning            |        3 |
+| Suresh Babu   | Digital Electronics         |        3 |
++---------------+-----------------------------+----------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q51. Display student attendance details with course names.
+mysql> SELECT s.student_name, c.course_name,
+    ->        a.total_classes, a.attended_classes
+    -> FROM attendance a
+    -> JOIN students s ON a.student_id = s.student_id
+    -> JOIN courses c ON a.course_id = c.course_id
+    -> ORDER BY s.student_id;
++---------------+-----------------------------+---------------+------------------+
+| student_name  | course_name                 | total_classes | attended_classes |
++---------------+-----------------------------+---------------+------------------+
+| Durga Bhavani | Database Management Systems |            50 |               46 |
+| Durga Bhavani | Data Structures             |            50 |               42 |
+| Ravi Kumar    | Database Management Systems |            50 |               40 |
+| Ravi Kumar    | Data Structures             |            50 |               45 |
+| Sneha Reddy   | Artificial Intelligence     |            50 |               48 |
+| Sneha Reddy   | Machine Learning            |            50 |               44 |
+| Arjun Varma   | Artificial Intelligence     |            50 |               39 |
+| Arjun Varma   | Machine Learning            |            50 |               43 |
+| Priya Sharma  | Computer Networks           |            50 |               47 |
+| Karthik Nair  | Computer Networks           |            50 |               38 |
+| Meena Iyer    | Digital Electronics         |            50 |               45 |
+| Suresh Babu   | Digital Electronics         |            50 |               41 |
++---------------+-----------------------------+---------------+------------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q52. Display student marks with exam and course names.
+mysql> SELECT s.student_name, ex.exam_name,
+    ->        c.course_name, m.marks_obtained
+    -> FROM marks m
+    -> JOIN students s ON m.student_id = s.student_id
+    -> JOIN exams ex ON m.exam_id = ex.exam_id
+    -> JOIN courses c ON ex.course_id = c.course_id
+    -> ORDER BY s.student_id;
++---------------+------------+-----------------------------+----------------+
+| student_name  | exam_name  | course_name                 | marks_obtained |
++---------------+------------+-----------------------------+----------------+
+| Durga Bhavani | Mid Term 1 | Database Management Systems |          92.00 |
+| Durga Bhavani | Mid Term 1 | Data Structures             |          88.00 |
+| Ravi Kumar    | Mid Term 1 | Database Management Systems |          85.00 |
+| Ravi Kumar    | Mid Term 1 | Data Structures             |          79.00 |
+| Sneha Reddy   | Mid Term 1 | Artificial Intelligence     |          95.00 |
+| Sneha Reddy   | Mid Term 1 | Machine Learning            |          91.00 |
+| Arjun Varma   | Mid Term 1 | Artificial Intelligence     |          82.00 |
+| Arjun Varma   | Mid Term 1 | Machine Learning            |          76.00 |
+| Priya Sharma  | Mid Term 1 | Computer Networks           |          89.00 |
+| Karthik Nair  | Mid Term 1 | Computer Networks           |          80.00 |
+| Meena Iyer    | Mid Term 1 | Digital Electronics         |          93.00 |
+| Suresh Babu   | Mid Term 1 | Digital Electronics         |          84.00 |
++---------------+------------+-----------------------------+----------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q53. Display exam names with their course names.
+mysql> SELECT ex.exam_name, c.course_name
+    -> FROM exams ex
+    -> JOIN courses c
+    -> ON ex.course_id = c.course_id
+    -> ORDER BY ex.exam_id;
++------------+-----------------------------+
+| exam_name  | course_name                 |
++------------+-----------------------------+
+| Mid Term 1 | Database Management Systems |
+| Mid Term 1 | Data Structures             |
+| Mid Term 1 | Artificial Intelligence     |
+| Mid Term 1 | Machine Learning            |
+| Mid Term 1 | Computer Networks           |
+| Mid Term 1 | Digital Electronics         |
++------------+-----------------------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- C. LEFT, RIGHT, SELF AND CROSS JOINS
+mysql> -- =========================================================
+mysql>
+mysql> -- Q54. Find students who have not enrolled in any course.
+mysql> SELECT s.student_id, s.student_name
+    -> FROM students s
+    -> LEFT JOIN enrollments e
+    -> ON s.student_id = e.student_id
+    -> WHERE e.enrollment_id IS NULL;
+Empty set (0.00 sec)
+
+mysql>
+mysql> -- Q55. Find courses that have no student enrollments.
+mysql> SELECT c.course_id, c.course_name
+    -> FROM courses c
+    -> LEFT JOIN enrollments e
+    -> ON c.course_id = e.course_id
+    -> WHERE e.enrollment_id IS NULL;
+Empty set (0.00 sec)
+
+mysql>
+mysql> -- Q56. Find students who have no attendance records.
+mysql> SELECT s.student_id, s.student_name
+    -> FROM attendance a
+    -> RIGHT JOIN students s
+    -> ON a.student_id = s.student_id
+    -> WHERE a.attendance_id IS NULL;
+Empty set (0.00 sec)
+
+mysql>
+mysql> -- Q57. SELF JOIN: Find pairs of students studying in the same department.
+mysql> SELECT s1.student_name AS student_1,
+    ->        s2.student_name AS student_2,
+    ->        d.department_name
+    -> FROM students s1
+    -> JOIN students s2
+    -> ON s1.department_id = s2.department_id
+    -> AND s1.student_id < s2.student_id
+    -> JOIN departments d
+    -> ON s1.department_id = d.department_id;
++---------------+--------------+-------------------------------+
+| student_1     | student_2    | department_name               |
++---------------+--------------+-------------------------------+
+| Durga Bhavani | Ravi Kumar   | Computer Science Engineering  |
+| Sneha Reddy   | Arjun Varma  | Artificial Intelligence       |
+| Priya Sharma  | Karthik Nair | Information Technology        |
+| Meena Iyer    | Suresh Babu  | Electronics and Communication |
++---------------+--------------+-------------------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q58. CROSS JOIN: Pair every faculty member with every course.
+mysql> SELECT f.faculty_name, c.course_name
+    -> FROM faculty f
+    -> CROSS JOIN courses c
+    -> ORDER BY f.faculty_id, c.course_id;
++----------------+-----------------------------+
+| faculty_name   | course_name                 |
++----------------+-----------------------------+
+| Ramesh Kumar   | Database Management Systems |
+| Ramesh Kumar   | Data Structures             |
+| Ramesh Kumar   | Artificial Intelligence     |
+| Ramesh Kumar   | Machine Learning            |
+| Ramesh Kumar   | Computer Networks           |
+| Ramesh Kumar   | Digital Electronics         |
+| Lakshmi Devi   | Database Management Systems |
+| Lakshmi Devi   | Data Structures             |
+| Lakshmi Devi   | Artificial Intelligence     |
+| Lakshmi Devi   | Machine Learning            |
+| Lakshmi Devi   | Computer Networks           |
+| Lakshmi Devi   | Digital Electronics         |
+| Prasad Rao     | Database Management Systems |
+| Prasad Rao     | Data Structures             |
+| Prasad Rao     | Artificial Intelligence     |
+| Prasad Rao     | Machine Learning            |
+| Prasad Rao     | Computer Networks           |
+| Prasad Rao     | Digital Electronics         |
+| Srinivas Reddy | Database Management Systems |
+| Srinivas Reddy | Data Structures             |
+| Srinivas Reddy | Artificial Intelligence     |
+| Srinivas Reddy | Machine Learning            |
+| Srinivas Reddy | Computer Networks           |
+| Srinivas Reddy | Digital Electronics         |
++----------------+-----------------------------+
+24 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- D. GROUP BY AND HAVING
+mysql> -- =========================================================
+mysql>
+mysql> -- Q59. Count the number of students in each department.
+mysql> SELECT d.department_name,
+    ->        COUNT(s.student_id) AS total_students
+    -> FROM departments d
+    -> LEFT JOIN students s
+    -> ON d.department_id = s.department_id
+    -> GROUP BY d.department_id, d.department_name
+    -> ORDER BY d.department_id;
++-------------------------------+----------------+
+| department_name               | total_students |
++-------------------------------+----------------+
+| Computer Science Engineering  |              2 |
+| Artificial Intelligence       |              2 |
+| Information Technology        |              2 |
+| Electronics and Communication |              2 |
++-------------------------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q60. Count the number of courses offered by each department.
+mysql> SELECT d.department_name,
+    ->        COUNT(c.course_id) AS total_courses
+    -> FROM departments d
+    -> LEFT JOIN courses c
+    -> ON d.department_id = c.department_id
+    -> GROUP BY d.department_id, d.department_name
+    -> ORDER BY d.department_id;
++-------------------------------+---------------+
+| department_name               | total_courses |
++-------------------------------+---------------+
+| Computer Science Engineering  |             2 |
+| Artificial Intelligence       |             2 |
+| Information Technology        |             1 |
+| Electronics and Communication |             1 |
++-------------------------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q61. Count the number of students enrolled in each course.
+mysql> SELECT c.course_name,
+    ->        COUNT(e.student_id) AS total_students
+    -> FROM courses c
+    -> LEFT JOIN enrollments e
+    -> ON c.course_id = e.course_id
+    -> GROUP BY c.course_id, c.course_name
+    -> ORDER BY total_students DESC;
++-----------------------------+----------------+
+| course_name                 | total_students |
++-----------------------------+----------------+
+| Database Management Systems |              2 |
+| Data Structures             |              2 |
+| Artificial Intelligence     |              2 |
+| Machine Learning            |              2 |
+| Computer Networks           |              2 |
+| Digital Electronics         |              2 |
++-----------------------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q62. Find the average marks for each exam.
+mysql> SELECT ex.exam_name,
+    ->        ROUND(AVG(m.marks_obtained), 2) AS average_marks
+    -> FROM exams ex
+    -> JOIN marks m
+    -> ON ex.exam_id = m.exam_id
+    -> GROUP BY ex.exam_id, ex.exam_name
+    -> ORDER BY ex.exam_id;
++------------+---------------+
+| exam_name  | average_marks |
++------------+---------------+
+| Mid Term 1 |         88.50 |
+| Mid Term 1 |         83.50 |
+| Mid Term 1 |         88.50 |
+| Mid Term 1 |         83.50 |
+| Mid Term 1 |         84.50 |
+| Mid Term 1 |         88.50 |
++------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q63. Find the average attendance percentage for each course.
+mysql> SELECT c.course_name,
+    ->        ROUND(AVG(a.attended_classes * 100.0 /
+    ->        NULLIF(a.total_classes, 0)), 2) AS average_attendance
+    -> FROM courses c
+    -> JOIN attendance a
+    -> ON c.course_id = a.course_id
+    -> GROUP BY c.course_id, c.course_name
+    -> ORDER BY average_attendance DESC;
++-----------------------------+--------------------+
+| course_name                 | average_attendance |
++-----------------------------+--------------------+
+| Data Structures             |              87.00 |
+| Artificial Intelligence     |              87.00 |
+| Machine Learning            |              87.00 |
+| Database Management Systems |              86.00 |
+| Digital Electronics         |              86.00 |
+| Computer Networks           |              85.00 |
++-----------------------------+--------------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q64. Find the total marks obtained by each student.
+mysql> SELECT s.student_name,
+    ->        SUM(m.marks_obtained) AS total_marks
+    -> FROM students s
+    -> JOIN marks m
+    -> ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.student_name
+    -> ORDER BY total_marks DESC;
++---------------+-------------+
+| student_name  | total_marks |
++---------------+-------------+
+| Sneha Reddy   |      186.00 |
+| Durga Bhavani |      180.00 |
+| Ravi Kumar    |      164.00 |
+| Arjun Varma   |      158.00 |
+| Meena Iyer    |       93.00 |
+| Priya Sharma  |       89.00 |
+| Suresh Babu   |       84.00 |
+| Karthik Nair  |       80.00 |
++---------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q65. HAVING: Find courses having more than one enrolled student.
+mysql> SELECT c.course_name,
+    ->        COUNT(e.student_id) AS total_students
+    -> FROM courses c
+    -> JOIN enrollments e
+    -> ON c.course_id = e.course_id
+    -> GROUP BY c.course_id, c.course_name
+    -> HAVING COUNT(e.student_id) > 1
+    -> ORDER BY total_students DESC;
++-----------------------------+----------------+
+| course_name                 | total_students |
++-----------------------------+----------------+
+| Database Management Systems |              2 |
+| Data Structures             |              2 |
+| Artificial Intelligence     |              2 |
+| Machine Learning            |              2 |
+| Computer Networks           |              2 |
+| Digital Electronics         |              2 |
++-----------------------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q66. HAVING: Find students whose average marks are above 80.
+mysql> SELECT s.student_name,
+    ->        ROUND(AVG(m.marks_obtained), 2) AS average_marks
+    -> FROM students s
+    -> JOIN marks m
+    -> ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.student_name
+    -> HAVING AVG(m.marks_obtained) > 80
+    -> ORDER BY average_marks DESC;
++---------------+---------------+
+| student_name  | average_marks |
++---------------+---------------+
+| Sneha Reddy   |         93.00 |
+| Meena Iyer    |         93.00 |
+| Durga Bhavani |         90.00 |
+| Priya Sharma  |         89.00 |
+| Suresh Babu   |         84.00 |
+| Ravi Kumar    |         82.00 |
++---------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- =========================================================
+mysql> -- E. BUSINESS AND ACADEMIC ANALYSIS
+mysql> -- =========================================================
+mysql>
+mysql> -- Q67. Calculate attendance percentage for every student and course.
+mysql> SELECT s.student_name, c.course_name,
+    ->        a.total_classes, a.attended_classes,
+    ->        ROUND(a.attended_classes * 100.0 /
+    ->        NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+    -> FROM attendance a
+    -> JOIN students s ON a.student_id = s.student_id
+    -> JOIN courses c ON a.course_id = c.course_id
+    -> ORDER BY s.student_id;
++---------------+-----------------------------+---------------+------------------+-----------------------+
+| student_name  | course_name                 | total_classes | attended_classes | attendance_percentage |
++---------------+-----------------------------+---------------+------------------+-----------------------+
+| Durga Bhavani | Database Management Systems |            50 |               46 |                 92.00 |
+| Durga Bhavani | Data Structures             |            50 |               42 |                 84.00 |
+| Ravi Kumar    | Database Management Systems |            50 |               40 |                 80.00 |
+| Ravi Kumar    | Data Structures             |            50 |               45 |                 90.00 |
+| Sneha Reddy   | Artificial Intelligence     |            50 |               48 |                 96.00 |
+| Sneha Reddy   | Machine Learning            |            50 |               44 |                 88.00 |
+| Arjun Varma   | Artificial Intelligence     |            50 |               39 |                 78.00 |
+| Arjun Varma   | Machine Learning            |            50 |               43 |                 86.00 |
+| Priya Sharma  | Computer Networks           |            50 |               47 |                 94.00 |
+| Karthik Nair  | Computer Networks           |            50 |               38 |                 76.00 |
+| Meena Iyer    | Digital Electronics         |            50 |               45 |                 90.00 |
+| Suresh Babu   | Digital Electronics         |            50 |               41 |                 82.00 |
++---------------+-----------------------------+---------------+------------------+-----------------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q68. Find the average marks and performance category of each student.
+mysql> SELECT s.student_name,
+    ->        ROUND(AVG(m.marks_obtained), 2) AS average_marks,
+    ->        CASE
+    ->            WHEN AVG(m.marks_obtained) >= 90 THEN 'Excellent'
+    ->            WHEN AVG(m.marks_obtained) >= 80 THEN 'Very Good'
+    ->            WHEN AVG(m.marks_obtained) >= 70 THEN 'Good'
+    ->            WHEN AVG(m.marks_obtained) >= 60 THEN 'Average'
+    ->            ELSE 'Needs Improvement'
+    ->        END AS performance
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.student_name
+    -> ORDER BY average_marks DESC;
++---------------+---------------+-------------+
+| student_name  | average_marks | performance |
++---------------+---------------+-------------+
+| Sneha Reddy   |         93.00 | Excellent   |
+| Meena Iyer    |         93.00 | Excellent   |
+| Durga Bhavani |         90.00 | Excellent   |
+| Priya Sharma  |         89.00 | Very Good   |
+| Suresh Babu   |         84.00 | Very Good   |
+| Ravi Kumar    |         82.00 | Very Good   |
+| Karthik Nair  |         80.00 | Very Good   |
+| Arjun Varma   |         79.00 | Good        |
++---------------+---------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q69. Count the number of courses handled by each faculty member.
+mysql> SELECT f.faculty_name,
+    ->        COUNT(c.course_id) AS total_courses
+    -> FROM faculty f
+    -> LEFT JOIN courses c
+    -> ON f.faculty_id = c.faculty_id
+    -> GROUP BY f.faculty_id, f.faculty_name
+    -> ORDER BY total_courses DESC;
++----------------+---------------+
+| faculty_name   | total_courses |
++----------------+---------------+
+| Ramesh Kumar   |             2 |
+| Lakshmi Devi   |             2 |
+| Prasad Rao     |             1 |
+| Srinivas Reddy |             1 |
++----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- Q70. Find the total number of enrollments in each semester.
+mysql> SELECT semester,
+    ->        COUNT(*) AS total_enrollments
+    -> FROM enrollments
+    -> GROUP BY semester
+    -> ORDER BY semester;
++----------+-------------------+
+| semester | total_enrollments |
++----------+-------------------+
+|        3 |                12 |
++----------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> USE smart_college;
+Database changed
+mysql>
+mysql> -- ============================================================
+mysql> -- HARD SQL QUERIES
+mysql> -- Q71 - Q100
+mysql> -- Subqueries, views, stored procedures, triggers and other
+mysql> -- (CASE, a stored function and a transaction)
+mysql> -- ============================================================
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- A. SUBQUERIES
+mysql> -- Q71 - Q80
+mysql> -- A subquery is a SELECT written inside another query.
+mysql> -- ============================================================
+mysql>
+mysql> -- Q71. Find students who scored above the average marks.
+mysql> SELECT s.student_name, m.marks_obtained
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> WHERE m.marks_obtained > (
+    ->     SELECT AVG(marks_obtained) FROM marks
+    -> );
++---------------+----------------+
+| student_name  | marks_obtained |
++---------------+----------------+
+| Durga Bhavani |          92.00 |
+| Durga Bhavani |          88.00 |
+| Sneha Reddy   |          95.00 |
+| Sneha Reddy   |          91.00 |
+| Priya Sharma  |          89.00 |
+| Meena Iyer    |          93.00 |
++---------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q72. Find the student who scored the highest marks.
+mysql> SELECT s.student_name, m.marks_obtained
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> WHERE m.marks_obtained = (
+    ->     SELECT MAX(marks_obtained) FROM marks
+    -> );
++--------------+----------------+
+| student_name | marks_obtained |
++--------------+----------------+
+| Sneha Reddy  |          95.00 |
++--------------+----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q73. Find courses that have at least one enrollment (IN).
+mysql> SELECT course_id, course_name
+    -> FROM courses
+    -> WHERE course_id IN (
+    ->     SELECT course_id FROM enrollments
+    -> );
++-----------+-----------------------------+
+| course_id | course_name                 |
++-----------+-----------------------------+
+|         1 | Database Management Systems |
+|         2 | Data Structures             |
+|         3 | Artificial Intelligence     |
+|         4 | Machine Learning            |
+|         5 | Computer Networks           |
+|         6 | Digital Electronics         |
++-----------+-----------------------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q74. Find students who have enrolled in at least one course (EXISTS).
+mysql> SELECT s.student_id, s.student_name
+    -> FROM students s
+    -> WHERE EXISTS (
+    ->     SELECT 1
+    ->     FROM enrollments e
+    ->     WHERE e.student_id = s.student_id
+    -> );
++------------+---------------+
+| student_id | student_name  |
++------------+---------------+
+|          1 | Durga Bhavani |
+|          2 | Ravi Kumar    |
+|          3 | Sneha Reddy   |
+|          4 | Arjun Varma   |
+|          5 | Priya Sharma  |
+|          6 | Karthik Nair  |
+|          7 | Meena Iyer    |
+|          8 | Suresh Babu   |
++------------+---------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q75. Find students whose marks are greater than the average marks in their exam.
+mysql> SELECT s.student_name, m.exam_id, m.marks_obtained
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> WHERE m.marks_obtained > (
+    ->     SELECT AVG(m2.marks_obtained)
+    ->     FROM marks m2
+    ->     WHERE m2.exam_id = m.exam_id
+    -> )
+    -> ORDER BY m.marks_obtained DESC;
++---------------+---------+----------------+
+| student_name  | exam_id | marks_obtained |
++---------------+---------+----------------+
+| Sneha Reddy   |       3 |          95.00 |
+| Meena Iyer    |       6 |          93.00 |
+| Durga Bhavani |       1 |          92.00 |
+| Sneha Reddy   |       4 |          91.00 |
+| Priya Sharma  |       5 |          89.00 |
+| Durga Bhavani |       2 |          88.00 |
++---------------+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> -- Q76. Find students whose overall attendance
+mysql> -- percentage is above 85%.
+mysql>
+mysql> SELECT s.student_name,
+    ->        ROUND(
+    ->            SUM(a.attended_classes) * 100.0 /
+    ->            NULLIF(SUM(a.total_classes), 0),
+    ->            2
+    ->        ) AS attendance_percentage
+    -> FROM students s
+    -> JOIN attendance a
+    -> ON s.student_id = a.student_id
+    -> GROUP BY s.student_id, s.student_name
+    -> HAVING SUM(a.attended_classes) * 100.0 /
+    ->        NULLIF(SUM(a.total_classes), 0) > 85;
++---------------+-----------------------+
+| student_name  | attendance_percentage |
++---------------+-----------------------+
+| Durga Bhavani |                 88.00 |
+| Sneha Reddy   |                 92.00 |
+| Priya Sharma  |                 94.00 |
+| Meena Iyer    |                 90.00 |
++---------------+-----------------------+
+4 rows in set (0.01 sec)
+
+mysql>
+mysql>
+mysql> -- Q77. Find courses whose average marks are higher than the overall average.
+mysql> SELECT c.course_name,
+    ->        ROUND(AVG(m.marks_obtained), 2) AS avg_marks
+    -> FROM courses c
+    -> JOIN exams e ON c.course_id = e.course_id
+    -> JOIN marks m ON e.exam_id = m.exam_id
+    -> GROUP BY c.course_id, c.course_name
+    -> HAVING AVG(m.marks_obtained) > (
+    ->     SELECT AVG(marks_obtained) FROM marks
+    -> )
+    -> ORDER BY avg_marks DESC;
++-----------------------------+-----------+
+| course_name                 | avg_marks |
++-----------------------------+-----------+
+| Database Management Systems |     88.50 |
+| Artificial Intelligence     |     88.50 |
+| Digital Electronics         |     88.50 |
++-----------------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q78. Find departments that have more students than the average department count.
+mysql> SELECT d.department_name,
+    ->        COUNT(s.student_id) AS total_students
+    -> FROM departments d
+    -> JOIN students s ON d.department_id = s.department_id
+    -> GROUP BY d.department_id, d.department_name
+    -> HAVING COUNT(s.student_id) > (
+    ->     SELECT AVG(student_count)
+    ->     FROM (
+    ->         SELECT COUNT(*) AS student_count
+    ->         FROM students
+    ->         GROUP BY department_id
+    ->     ) AS dept_counts
+    -> );
+Empty set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q79. Find students who have not enrolled in any course (NOT EXISTS).
+mysql> SELECT s.student_id, s.student_name
+    -> FROM students s
+    -> WHERE NOT EXISTS (
+    ->     SELECT 1
+    ->     FROM enrollments e
+    ->     WHERE e.student_id = s.student_id
+    -> );
+Empty set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q80. Show every faculty member with the number of courses assigned.
+mysql> SELECT f.faculty_name,
+    ->        (
+    ->            SELECT COUNT(*)
+    ->            FROM courses c
+    ->            WHERE c.faculty_id = f.faculty_id
+    ->        ) AS total_courses
+    -> FROM faculty f
+    -> ORDER BY total_courses DESC, f.faculty_name;
++----------------+---------------+
+| faculty_name   | total_courses |
++----------------+---------------+
+| Lakshmi Devi   |             2 |
+| Ramesh Kumar   |             2 |
+| Prasad Rao     |             1 |
+| Srinivas Reddy |             1 |
++----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- B. VIEWS
+mysql> -- Q81 - Q84
+mysql> -- A view is a saved SELECT query. It displays current data
+mysql> -- from the underlying tables.
+mysql> -- Existing views are reused below.
+mysql> -- ============================================================
+mysql>
+mysql> -- Q81. Display complete attendance analytics.
+mysql> SELECT *
+    -> FROM attendance_analytics;
++------------+---------------+-----------------------------+---------------+------------------+-----------------------+
+| student_id | student_name  | course_name                 | total_classes | attended_classes | attendance_percentage |
++------------+---------------+-----------------------------+---------------+------------------+-----------------------+
+|          1 | Durga Bhavani | Database Management Systems |            50 |               46 |                 92.00 |
+|          1 | Durga Bhavani | Data Structures             |            50 |               42 |                 84.00 |
+|          2 | Ravi Kumar    | Database Management Systems |            50 |               40 |                 80.00 |
+|          2 | Ravi Kumar    | Data Structures             |            50 |               45 |                 90.00 |
+|          3 | Sneha Reddy   | Artificial Intelligence     |            50 |               48 |                 96.00 |
+|          3 | Sneha Reddy   | Machine Learning            |            50 |               44 |                 88.00 |
+|          4 | Arjun Varma   | Artificial Intelligence     |            50 |               39 |                 78.00 |
+|          4 | Arjun Varma   | Machine Learning            |            50 |               43 |                 86.00 |
+|          5 | Priya Sharma  | Computer Networks           |            50 |               47 |                 94.00 |
+|          6 | Karthik Nair  | Computer Networks           |            50 |               38 |                 76.00 |
+|          7 | Meena Iyer    | Digital Electronics         |            50 |               45 |                 90.00 |
+|          8 | Suresh Babu   | Digital Electronics         |            50 |               41 |                 82.00 |
++------------+---------------+-----------------------------+---------------+------------------+-----------------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q82. Display student performance details.
+mysql> SELECT *
+    -> FROM student_performance;
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+| student_id | student_name  | course_name                 | exam_name  | marks_obtained | max_marks | percentage | performance |
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+|          1 | Durga Bhavani | Database Management Systems | Mid Term 1 |          92.00 |       100 |      92.00 | Excellent   |
+|          2 | Ravi Kumar    | Database Management Systems | Mid Term 1 |          85.00 |       100 |      85.00 | Very Good   |
+|          1 | Durga Bhavani | Data Structures             | Mid Term 1 |          88.00 |       100 |      88.00 | Very Good   |
+|          2 | Ravi Kumar    | Data Structures             | Mid Term 1 |          79.00 |       100 |      79.00 | Very Good   |
+|          3 | Sneha Reddy   | Artificial Intelligence     | Mid Term 1 |          95.00 |       100 |      95.00 | Excellent   |
+|          4 | Arjun Varma   | Artificial Intelligence     | Mid Term 1 |          82.00 |       100 |      82.00 | Very Good   |
+|          3 | Sneha Reddy   | Machine Learning            | Mid Term 1 |          91.00 |       100 |      91.00 | Excellent   |
+|          4 | Arjun Varma   | Machine Learning            | Mid Term 1 |          76.00 |       100 |      76.00 | Very Good   |
+|          5 | Priya Sharma  | Computer Networks           | Mid Term 1 |          89.00 |       100 |      89.00 | Very Good   |
+|          6 | Karthik Nair  | Computer Networks           | Mid Term 1 |          80.00 |       100 |      80.00 | Very Good   |
+|          7 | Meena Iyer    | Digital Electronics         | Mid Term 1 |          93.00 |       100 |      93.00 | Excellent   |
+|          8 | Suresh Babu   | Digital Electronics         | Mid Term 1 |          84.00 |       100 |      84.00 | Very Good   |
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+12 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q83. Display department-wise summary.
+mysql> SELECT *
+    -> FROM department_summary;
++---------------+-------------------------------+----------------+---------------+---------------+
+| department_id | department_name               | total_students | total_faculty | total_courses |
++---------------+-------------------------------+----------------+---------------+---------------+
+|             1 | Computer Science Engineering  |              2 |             1 |             2 |
+|             2 | Artificial Intelligence       |              2 |             1 |             2 |
+|             3 | Information Technology        |              2 |             1 |             1 |
+|             4 | Electronics and Communication |              2 |             1 |             1 |
++---------------+-------------------------------+----------------+---------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q84. Display students whose performance percentage is above 85.
+mysql> SELECT *
+    -> FROM student_performance
+    -> WHERE percentage > 85;
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+| student_id | student_name  | course_name                 | exam_name  | marks_obtained | max_marks | percentage | performance |
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+|          1 | Durga Bhavani | Database Management Systems | Mid Term 1 |          92.00 |       100 |      92.00 | Excellent   |
+|          1 | Durga Bhavani | Data Structures             | Mid Term 1 |          88.00 |       100 |      88.00 | Very Good   |
+|          3 | Sneha Reddy   | Artificial Intelligence     | Mid Term 1 |          95.00 |       100 |      95.00 | Excellent   |
+|          3 | Sneha Reddy   | Machine Learning            | Mid Term 1 |          91.00 |       100 |      91.00 | Excellent   |
+|          5 | Priya Sharma  | Computer Networks           | Mid Term 1 |          89.00 |       100 |      89.00 | Very Good   |
+|          7 | Meena Iyer    | Digital Electronics         | Mid Term 1 |          93.00 |       100 |      93.00 | Excellent   |
++------------+---------------+-----------------------------+------------+----------------+-----------+------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- C. STORED PROCEDURES
+mysql> -- Q85 - Q91
+mysql> -- A stored procedure is a saved block of SQL executed using CALL.
+mysql> -- DELIMITER prevents MySQL from ending the procedure at the
+mysql> -- first semicolon inside its body.
+mysql> -- ============================================================
+mysql>
+mysql> -- Q85. Procedure: display all students.
+mysql> DROP PROCEDURE IF EXISTS sp_all_students;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_all_students()
+    -> BEGIN
+    ->     SELECT * FROM students;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_all_students();
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+| student_id | student_name  | gender | email             | phone      | department_id | admission_year |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+|          1 | Durga Bhavani | Female | durga@gmail.com   | 9876500001 |             1 |           2025 |
+|          2 | Ravi Kumar    | Male   | ravi@gmail.com    | 9876500002 |             1 |           2025 |
+|          3 | Sneha Reddy   | Female | sneha@gmail.com   | 9876500003 |             2 |           2025 |
+|          4 | Arjun Varma   | Male   | arjun@gmail.com   | 9876500004 |             2 |           2025 |
+|          5 | Priya Sharma  | Female | priya@gmail.com   | 9876500005 |             3 |           2025 |
+|          6 | Karthik Nair  | Male   | karthik@gmail.com | 9876500006 |             3 |           2025 |
+|          7 | Meena Iyer    | Female | meena@gmail.com   | 9876500007 |             4 |           2025 |
+|          8 | Suresh Babu   | Male   | suresh@gmail.com  | 9876500008 |             4 |           2025 |
++------------+---------------+--------+-------------------+------------+---------------+----------------+
+8 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> -- Q86. Procedure: display students belonging to a department.
+mysql> DROP PROCEDURE IF EXISTS sp_students_by_department;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_students_by_department(IN p_department_id INT)
+    -> BEGIN
+    ->     SELECT student_id, student_name, email
+    ->     FROM students
+    ->     WHERE department_id = p_department_id;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_students_by_department(1);
++------------+---------------+-----------------+
+| student_id | student_name  | email           |
++------------+---------------+-----------------+
+|          1 | Durga Bhavani | durga@gmail.com |
+|          2 | Ravi Kumar    | ravi@gmail.com  |
++------------+---------------+-----------------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q87. Procedure: display marks of a particular student.
+mysql> DROP PROCEDURE IF EXISTS sp_student_marks;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_student_marks(IN p_student_id INT)
+    -> BEGIN
+    ->     SELECT s.student_name, m.exam_id, m.marks_obtained
+    ->     FROM students s
+    ->     JOIN marks m ON s.student_id = m.student_id
+    ->     WHERE s.student_id = p_student_id;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_student_marks(1);
++---------------+---------+----------------+
+| student_name  | exam_id | marks_obtained |
++---------------+---------+----------------+
+| Durga Bhavani |       1 |          92.00 |
+| Durga Bhavani |       2 |          88.00 |
++---------------+---------+----------------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q88. Procedure: display all courses with their faculty names.
+mysql> DROP PROCEDURE IF EXISTS sp_course_faculty;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_course_faculty()
+    -> BEGIN
+    ->     SELECT c.course_name, c.course_code, f.faculty_name
+    ->     FROM courses c
+    ->     JOIN faculty f ON c.faculty_id = f.faculty_id;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_course_faculty();
++-----------------------------+-------------+----------------+
+| course_name                 | course_code | faculty_name   |
++-----------------------------+-------------+----------------+
+| Database Management Systems | CSE301      | Ramesh Kumar   |
+| Data Structures             | CSE302      | Ramesh Kumar   |
+| Artificial Intelligence     | AIML301     | Lakshmi Devi   |
+| Machine Learning            | AIML302     | Lakshmi Devi   |
+| Computer Networks           | IT301       | Prasad Rao     |
+| Digital Electronics         | ECE301      | Srinivas Reddy |
++-----------------------------+-------------+----------------+
+6 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> -- Q89. Procedure: display attendance details of a particular student.
+mysql> DROP PROCEDURE IF EXISTS sp_student_attendance;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_student_attendance(IN p_student_id INT)
+    -> BEGIN
+    ->     SELECT s.student_name,
+    ->            c.course_name,
+    ->            a.attended_classes,
+    ->            a.total_classes,
+    ->            ROUND(a.attended_classes * 100.0 /
+    ->                  NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+    ->     FROM attendance a
+    ->     JOIN students s ON a.student_id = s.student_id
+    ->     JOIN courses c ON a.course_id = c.course_id
+    ->     WHERE s.student_id = p_student_id;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_student_attendance(1);
++---------------+-----------------------------+------------------+---------------+-----------------------+
+| student_name  | course_name                 | attended_classes | total_classes | attendance_percentage |
++---------------+-----------------------------+------------------+---------------+-----------------------+
+| Durga Bhavani | Database Management Systems |               46 |            50 |                 92.00 |
+| Durga Bhavani | Data Structures             |               42 |            50 |                 84.00 |
++---------------+-----------------------------+------------------+---------------+-----------------------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> -- Q90. Procedure: display students with attendance below a given percentage.
+mysql> DROP PROCEDURE IF EXISTS sp_low_attendance;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_low_attendance(IN p_min_percentage DECIMAL(5,2))
+    -> BEGIN
+    ->     SELECT s.student_name,
+    ->            c.course_name,
+    ->            ROUND(a.attended_classes * 100.0 /
+    ->                  NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+    ->     FROM attendance a
+    ->     JOIN students s ON a.student_id = s.student_id
+    ->     JOIN courses c ON a.course_id = c.course_id
+    ->     WHERE a.total_classes > 0
+    ->       AND (a.attended_classes * 100.0 / a.total_classes)
+    ->           < p_min_percentage;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_low_attendance(85);
++---------------+-----------------------------+-----------------------+
+| student_name  | course_name                 | attendance_percentage |
++---------------+-----------------------------+-----------------------+
+| Durga Bhavani | Data Structures             |                 84.00 |
+| Ravi Kumar    | Database Management Systems |                 80.00 |
+| Arjun Varma   | Artificial Intelligence     |                 78.00 |
+| Karthik Nair  | Computer Networks           |                 76.00 |
+| Suresh Babu   | Digital Electronics         |                 82.00 |
++---------------+-----------------------------+-----------------------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql>
+mysql> -- Q91. Procedure: display department-wise student count.
+mysql> DROP PROCEDURE IF EXISTS sp_department_student_count;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE sp_department_student_count()
+    -> BEGIN
+    ->     SELECT d.department_name,
+    ->            COUNT(s.student_id) AS total_students
+    ->     FROM departments d
+    ->     LEFT JOIN students s
+    ->     ON d.department_id = s.department_id
+    ->     GROUP BY d.department_id, d.department_name;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL sp_department_student_count();
++-------------------------------+----------------+
+| department_name               | total_students |
++-------------------------------+----------------+
+| Artificial Intelligence       |              2 |
+| Computer Science Engineering  |              2 |
+| Electronics and Communication |              2 |
+| Information Technology        |              2 |
++-------------------------------+----------------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- D. TRIGGERS
+mysql> -- Q92 - Q97
+mysql> -- A trigger runs automatically BEFORE or AFTER INSERT / UPDATE.
+mysql> -- NEW represents new row values and OLD represents old row values.
+mysql> -- ============================================================
+mysql>
+mysql> -- Q92. Trigger (BEFORE INSERT): prevent negative marks.
+mysql> DROP TRIGGER IF EXISTS trg_check_marks;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE TRIGGER trg_check_marks
+    -> BEFORE INSERT ON marks
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.marks_obtained < 0 THEN
+    ->         SIGNAL SQLSTATE '45000'
+    ->         SET MESSAGE_TEXT = 'Marks cannot be negative';
+    ->     END IF;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql> -- Q93. Trigger (BEFORE INSERT): prevent attendance above total classes.
+mysql> DROP TRIGGER IF EXISTS trg_check_attendance;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE TRIGGER trg_check_attendance
+    -> BEFORE INSERT ON attendance
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.attended_classes > NEW.total_classes THEN
+    ->         SIGNAL SQLSTATE '45000'
+    ->         SET MESSAGE_TEXT = 'Attended classes cannot exceed total classes';
+    ->     END IF;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql> -- Q94. Trigger (BEFORE UPDATE): prevent invalid attendance updates.
+mysql> DROP TRIGGER IF EXISTS trg_check_attendance_update;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE TRIGGER trg_check_attendance_update
+    -> BEFORE UPDATE ON attendance
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.attended_classes > NEW.total_classes
+    ->        OR NEW.attended_classes < 0
+    ->        OR NEW.total_classes < 0 THEN
+    ->         SIGNAL SQLSTATE '45000'
+    ->         SET MESSAGE_TEXT = 'Invalid attendance values';
+    ->     END IF;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql> -- Q95. Trigger (BEFORE UPDATE): prevent negative marks during updates.
+mysql> DROP TRIGGER IF EXISTS trg_check_marks_update;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE TRIGGER trg_check_marks_update
+    -> BEFORE UPDATE ON marks
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.marks_obtained < 0 THEN
+    ->         SIGNAL SQLSTATE '45000'
+    ->         SET MESSAGE_TEXT = 'Marks cannot be negative';
+    ->     END IF;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql> -- Q96. Display all triggers created in the database.
+mysql> SHOW TRIGGERS;
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| Trigger                     | Event  | Table      | Statement                                                                                                                                                                                                                             | Timing | Created                | sql_mode                                                                                                              | Definer        | character_set_client | collation_connection | Database Collation |
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| trg_check_attendance        | INSERT | attendance | BEGIN
+    IF NEW.attended_classes > NEW.total_classes THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Attended classes cannot exceed total classes';
+    END IF;
+END                                                 | BEFORE | 2026-11-06 19:53:43.80 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_attendance_update | UPDATE | attendance | BEGIN
+    IF NEW.attended_classes > NEW.total_classes
+       OR NEW.attended_classes < 0
+       OR NEW.total_classes < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Invalid attendance values';
+    END IF;
+END | BEFORE | 2026-11-06 19:53:43.82 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_marks             | INSERT | marks      | BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END                                                                                       | BEFORE | 2026-11-06 19:53:43.78 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_marks_update      | UPDATE | marks      | BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END                                                                                       | BEFORE | 2026-11-06 19:53:43.84 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q97. Test the negative marks trigger.
+mysql> -- This statement should FAIL because negative marks are not allowed.
+mysql> INSERT INTO marks (student_id, exam_id, marks_obtained)
+    -> VALUES (1, 1, -10);
+ERROR 1644 (45000): Marks cannot be negative
+mysql>
+mysql> -- Expected error:
+mysql> -- ERROR 1644 (45000): Marks cannot be negative
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- E. OTHER: CASE, STORED FUNCTION AND TRANSACTION
+mysql> -- Q98 - Q100
+mysql> -- ============================================================
+mysql>
+mysql> -- Q98. CASE: categorize students based on their average marks.
+mysql> SELECT s.student_name,
+    ->        ROUND(AVG(m.marks_obtained), 2) AS average_marks,
+    ->        CASE
+    ->            WHEN AVG(m.marks_obtained) >= 90 THEN 'Excellent'
+    ->            WHEN AVG(m.marks_obtained) >= 80 THEN 'Very Good'
+    ->            WHEN AVG(m.marks_obtained) >= 70 THEN 'Good'
+    ->            WHEN AVG(m.marks_obtained) >= 60 THEN 'Average'
+    ->            ELSE 'Needs Improvement'
+    ->        END AS performance_category
+    -> FROM students s
+    -> JOIN marks m ON s.student_id = m.student_id
+    -> GROUP BY s.student_id, s.student_name
+    -> ORDER BY average_marks DESC;
++---------------+---------------+----------------------+
+| student_name  | average_marks | performance_category |
++---------------+---------------+----------------------+
+| Sneha Reddy   |         93.00 | Excellent            |
+| Meena Iyer    |         93.00 | Excellent            |
+| Durga Bhavani |         90.00 | Excellent            |
+| Priya Sharma  |         89.00 | Very Good            |
+| Suresh Babu   |         84.00 | Very Good            |
+| Ravi Kumar    |         82.00 | Very Good            |
+| Karthik Nair  |         80.00 | Very Good            |
+| Arjun Varma   |         79.00 | Good                 |
++---------------+---------------+----------------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q99. Stored FUNCTION: calculate the attendance percentage of a student.
+mysql> -- A function returns one value and can be used inside SELECT.
+mysql> DROP FUNCTION IF EXISTS fn_student_attendance;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER $$
+mysql> CREATE FUNCTION fn_student_attendance(p_student_id INT)
+    -> RETURNS DECIMAL(5,2)
+    -> READS SQL DATA
+    -> BEGIN
+    ->     DECLARE v_percentage DECIMAL(5,2);
+    ->
+    ->     SELECT COALESCE(
+    ->         ROUND(SUM(attended_classes) * 100.0 /
+    ->               NULLIF(SUM(total_classes), 0), 2),
+    ->         0
+    ->     )
+    ->     INTO v_percentage
+    ->     FROM attendance
+    ->     WHERE student_id = p_student_id;
+    ->
+    ->     RETURN v_percentage;
+    -> END$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> -- Use the function to display every student's attendance percentage.
+mysql> SELECT student_name,
+    ->        fn_student_attendance(student_id) AS attendance_percentage
+    -> FROM students;
++---------------+-----------------------+
+| student_name  | attendance_percentage |
++---------------+-----------------------+
+| Durga Bhavani |                 88.00 |
+| Ravi Kumar    |                 85.00 |
+| Sneha Reddy   |                 92.00 |
+| Arjun Varma   |                 82.00 |
+| Priya Sharma  |                 94.00 |
+| Karthik Nair  |                 76.00 |
+| Meena Iyer    |                 90.00 |
+| Suresh Babu   |                 82.00 |
++---------------+-----------------------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- Q100. TRANSACTION with SAVEPOINT: update attendance and roll back.
+mysql> -- The original attendance value is restored.
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> SAVEPOINT before_attendance_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> UPDATE attendance
+    -> SET attended_classes = attended_classes + 1
+    -> WHERE student_id = 1
+    ->   AND course_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> SELECT *
+    -> FROM attendance
+    -> WHERE student_id = 1
+    ->   AND course_id = 1;
++---------------+------------+-----------+---------------+------------------+
+| attendance_id | student_id | course_id | total_classes | attended_classes |
++---------------+------------+-----------+---------------+------------------+
+|             1 |          1 |         1 |            50 |               47 |
++---------------+------------+-----------+---------------+------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> ROLLBACK TO SAVEPOINT before_attendance_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> -- Verify that the original attendance value is restored.
+mysql> SELECT *
+    -> FROM attendance
+    -> WHERE student_id = 1
+    ->   AND course_id = 1;
++---------------+------------+-----------+---------------+------------------+
+| attendance_id | student_id | course_id | total_classes | attended_classes |
++---------------+------------+-----------+---------------+------------------+
+|             1 |          1 |         1 |            50 |               46 |
++---------------+------------+-----------+---------------+------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> -- ============================================================
+mysql> -- LIST EVERYTHING CREATED IN THIS FILE
+mysql> -- ============================================================
+mysql>
+mysql> SHOW FULL TABLES WHERE Table_type = 'VIEW';
++-------------------------+------------+
+| Tables_in_smart_college | Table_type |
++-------------------------+------------+
+| attendance_analytics    | VIEW       |
+| department_summary      | VIEW       |
+| student_performance     | VIEW       |
++-------------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SHOW PROCEDURE STATUS
+    -> WHERE Db = 'smart_college';
++---------------+-----------------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db            | Name                        | Type      | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++---------------+-----------------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| smart_college | sp_all_students             | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_course_faculty           | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_department_student_count | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_low_attendance           | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_students_by_department   | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_student_attendance       | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| smart_college | sp_student_marks            | PROCEDURE | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
++---------------+-----------------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+7 rows in set (0.00 sec)
+
+mysql>
+mysql> SHOW FUNCTION STATUS
+    -> WHERE Db = 'smart_college';
++---------------+-----------------------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db            | Name                  | Type     | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++---------------+-----------------------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| smart_college | fn_student_attendance | FUNCTION | root@localhost | 2026-11-06 19:53:43 | 2026-11-06 19:53:43 | DEFINER       |         | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
++---------------+-----------------------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> SHOW TRIGGERS;
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| Trigger                     | Event  | Table      | Statement                                                                                                                                                                                                                             | Timing | Created                | sql_mode                                                                                                              | Definer        | character_set_client | collation_connection | Database Collation |
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| trg_check_attendance        | INSERT | attendance | BEGIN
+    IF NEW.attended_classes > NEW.total_classes THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Attended classes cannot exceed total classes';
+    END IF;
+END                                                 | BEFORE | 2026-11-06 19:53:43.80 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_attendance_update | UPDATE | attendance | BEGIN
+    IF NEW.attended_classes > NEW.total_classes
+       OR NEW.attended_classes < 0
+       OR NEW.total_classes < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Invalid attendance values';
+    END IF;
+END | BEFORE | 2026-11-06 19:53:43.82 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_marks             | INSERT | marks      | BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END                                                                                       | BEFORE | 2026-11-06 19:53:43.78 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_check_marks_update      | UPDATE | marks      | BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END                                                                                       | BEFORE | 2026-11-06 19:53:43.84 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
++-----------------------------+--------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql>
