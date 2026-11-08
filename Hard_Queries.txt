@@ -1,0 +1,465 @@
+USE smart_college;
+
+-- ============================================================
+-- HARD SQL QUERIES
+-- Q71 - Q100
+-- Subqueries, views, stored procedures, triggers and other
+-- (CASE, a stored function and a transaction)
+-- ============================================================
+
+
+-- ============================================================
+-- A. SUBQUERIES
+-- Q71 - Q80
+-- A subquery is a SELECT written inside another query.
+-- ============================================================
+
+-- Q71. Find students who scored above the average marks.
+SELECT s.student_name, m.marks_obtained
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+WHERE m.marks_obtained > (
+    SELECT AVG(marks_obtained) FROM marks
+);
+
+
+-- Q72. Find the student who scored the highest marks.
+SELECT s.student_name, m.marks_obtained
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+WHERE m.marks_obtained = (
+    SELECT MAX(marks_obtained) FROM marks
+);
+
+
+-- Q73. Find courses that have at least one enrollment (IN).
+SELECT course_id, course_name
+FROM courses
+WHERE course_id IN (
+    SELECT course_id FROM enrollments
+);
+
+
+-- Q74. Find students who have enrolled in at least one course (EXISTS).
+SELECT s.student_id, s.student_name
+FROM students s
+WHERE EXISTS (
+    SELECT 1
+    FROM enrollments e
+    WHERE e.student_id = s.student_id
+);
+
+
+-- Q75. Find students whose marks are greater than the average marks in their exam.
+SELECT s.student_name, m.exam_id, m.marks_obtained
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+WHERE m.marks_obtained > (
+    SELECT AVG(m2.marks_obtained)
+    FROM marks m2
+    WHERE m2.exam_id = m.exam_id
+)
+ORDER BY m.marks_obtained DESC;
+
+
+-- Q76. Find students whose overall attendance
+-- percentage is above 85%.
+
+SELECT s.student_name,
+       ROUND(
+           SUM(a.attended_classes) * 100.0 /
+           NULLIF(SUM(a.total_classes), 0),
+           2
+       ) AS attendance_percentage
+FROM students s
+JOIN attendance a
+ON s.student_id = a.student_id
+GROUP BY s.student_id, s.student_name
+HAVING SUM(a.attended_classes) * 100.0 /
+       NULLIF(SUM(a.total_classes), 0) > 85;
+
+-- Q77. Find courses whose average marks are higher than the overall average.
+SELECT c.course_name,
+       ROUND(AVG(m.marks_obtained), 2) AS avg_marks
+FROM courses c
+JOIN exams e ON c.course_id = e.course_id
+JOIN marks m ON e.exam_id = m.exam_id
+GROUP BY c.course_id, c.course_name
+HAVING AVG(m.marks_obtained) > (
+    SELECT AVG(marks_obtained) FROM marks
+)
+ORDER BY avg_marks DESC;
+
+
+-- Q78. Find departments that have more students than the average department count.
+SELECT d.department_name,
+       COUNT(s.student_id) AS total_students
+FROM departments d
+JOIN students s ON d.department_id = s.department_id
+GROUP BY d.department_id, d.department_name
+HAVING COUNT(s.student_id) > (
+    SELECT AVG(student_count)
+    FROM (
+        SELECT COUNT(*) AS student_count
+        FROM students
+        GROUP BY department_id
+    ) AS dept_counts
+);
+
+
+-- Q79. Find students who have not enrolled in any course (NOT EXISTS).
+SELECT s.student_id, s.student_name
+FROM students s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM enrollments e
+    WHERE e.student_id = s.student_id
+);
+
+
+-- Q80. Show every faculty member with the number of courses assigned.
+SELECT f.faculty_name,
+       (
+           SELECT COUNT(*)
+           FROM courses c
+           WHERE c.faculty_id = f.faculty_id
+       ) AS total_courses
+FROM faculty f
+ORDER BY total_courses DESC, f.faculty_name;
+
+
+-- ============================================================
+-- B. VIEWS
+-- Q81 - Q84
+-- A view is a saved SELECT query. It displays current data
+-- from the underlying tables.
+-- Existing views are reused below.
+-- ============================================================
+
+-- Q81. Display complete attendance analytics.
+SELECT *
+FROM attendance_analytics;
+
+
+-- Q82. Display student performance details.
+SELECT *
+FROM student_performance;
+
+
+-- Q83. Display department-wise summary.
+SELECT *
+FROM department_summary;
+
+
+-- Q84. Display students whose performance percentage is above 85.
+SELECT *
+FROM student_performance
+WHERE percentage > 85;
+
+
+-- ============================================================
+-- C. STORED PROCEDURES
+-- Q85 - Q91
+-- A stored procedure is a saved block of SQL executed using CALL.
+-- DELIMITER prevents MySQL from ending the procedure at the
+-- first semicolon inside its body.
+-- ============================================================
+
+-- Q85. Procedure: display all students.
+DROP PROCEDURE IF EXISTS sp_all_students;
+
+DELIMITER $$
+CREATE PROCEDURE sp_all_students()
+BEGIN
+    SELECT * FROM students;
+END$$
+DELIMITER ;
+
+CALL sp_all_students();
+
+
+-- Q86. Procedure: display students belonging to a department.
+DROP PROCEDURE IF EXISTS sp_students_by_department;
+
+DELIMITER $$
+CREATE PROCEDURE sp_students_by_department(IN p_department_id INT)
+BEGIN
+    SELECT student_id, student_name, email
+    FROM students
+    WHERE department_id = p_department_id;
+END$$
+DELIMITER ;
+
+CALL sp_students_by_department(1);
+
+
+-- Q87. Procedure: display marks of a particular student.
+DROP PROCEDURE IF EXISTS sp_student_marks;
+
+DELIMITER $$
+CREATE PROCEDURE sp_student_marks(IN p_student_id INT)
+BEGIN
+    SELECT s.student_name, m.exam_id, m.marks_obtained
+    FROM students s
+    JOIN marks m ON s.student_id = m.student_id
+    WHERE s.student_id = p_student_id;
+END$$
+DELIMITER ;
+
+CALL sp_student_marks(1);
+
+
+-- Q88. Procedure: display all courses with their faculty names.
+DROP PROCEDURE IF EXISTS sp_course_faculty;
+
+DELIMITER $$
+CREATE PROCEDURE sp_course_faculty()
+BEGIN
+    SELECT c.course_name, c.course_code, f.faculty_name
+    FROM courses c
+    JOIN faculty f ON c.faculty_id = f.faculty_id;
+END$$
+DELIMITER ;
+
+CALL sp_course_faculty();
+
+
+-- Q89. Procedure: display attendance details of a particular student.
+DROP PROCEDURE IF EXISTS sp_student_attendance;
+
+DELIMITER $$
+CREATE PROCEDURE sp_student_attendance(IN p_student_id INT)
+BEGIN
+    SELECT s.student_name,
+           c.course_name,
+           a.attended_classes,
+           a.total_classes,
+           ROUND(a.attended_classes * 100.0 /
+                 NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+    FROM attendance a
+    JOIN students s ON a.student_id = s.student_id
+    JOIN courses c ON a.course_id = c.course_id
+    WHERE s.student_id = p_student_id;
+END$$
+DELIMITER ;
+
+CALL sp_student_attendance(1);
+
+
+-- Q90. Procedure: display students with attendance below a given percentage.
+DROP PROCEDURE IF EXISTS sp_low_attendance;
+
+DELIMITER $$
+CREATE PROCEDURE sp_low_attendance(IN p_min_percentage DECIMAL(5,2))
+BEGIN
+    SELECT s.student_name,
+           c.course_name,
+           ROUND(a.attended_classes * 100.0 /
+                 NULLIF(a.total_classes, 0), 2) AS attendance_percentage
+    FROM attendance a
+    JOIN students s ON a.student_id = s.student_id
+    JOIN courses c ON a.course_id = c.course_id
+    WHERE a.total_classes > 0
+      AND (a.attended_classes * 100.0 / a.total_classes)
+          < p_min_percentage;
+END$$
+DELIMITER ;
+
+CALL sp_low_attendance(85);
+
+
+-- Q91. Procedure: display department-wise student count.
+DROP PROCEDURE IF EXISTS sp_department_student_count;
+
+DELIMITER $$
+CREATE PROCEDURE sp_department_student_count()
+BEGIN
+    SELECT d.department_name,
+           COUNT(s.student_id) AS total_students
+    FROM departments d
+    LEFT JOIN students s
+    ON d.department_id = s.department_id
+    GROUP BY d.department_id, d.department_name;
+END$$
+DELIMITER ;
+
+CALL sp_department_student_count();
+
+
+-- ============================================================
+-- D. TRIGGERS
+-- Q92 - Q97
+-- A trigger runs automatically BEFORE or AFTER INSERT / UPDATE.
+-- NEW represents new row values and OLD represents old row values.
+-- ============================================================
+
+-- Q92. Trigger (BEFORE INSERT): prevent negative marks.
+DROP TRIGGER IF EXISTS trg_check_marks;
+
+DELIMITER $$
+CREATE TRIGGER trg_check_marks
+BEFORE INSERT ON marks
+FOR EACH ROW
+BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END$$
+DELIMITER ;
+
+
+-- Q93. Trigger (BEFORE INSERT): prevent attendance above total classes.
+DROP TRIGGER IF EXISTS trg_check_attendance;
+
+DELIMITER $$
+CREATE TRIGGER trg_check_attendance
+BEFORE INSERT ON attendance
+FOR EACH ROW
+BEGIN
+    IF NEW.attended_classes > NEW.total_classes THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Attended classes cannot exceed total classes';
+    END IF;
+END$$
+DELIMITER ;
+
+
+-- Q94. Trigger (BEFORE UPDATE): prevent invalid attendance updates.
+DROP TRIGGER IF EXISTS trg_check_attendance_update;
+
+DELIMITER $$
+CREATE TRIGGER trg_check_attendance_update
+BEFORE UPDATE ON attendance
+FOR EACH ROW
+BEGIN
+    IF NEW.attended_classes > NEW.total_classes
+       OR NEW.attended_classes < 0
+       OR NEW.total_classes < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Invalid attendance values';
+    END IF;
+END$$
+DELIMITER ;
+
+
+-- Q95. Trigger (BEFORE UPDATE): prevent negative marks during updates.
+DROP TRIGGER IF EXISTS trg_check_marks_update;
+
+DELIMITER $$
+CREATE TRIGGER trg_check_marks_update
+BEFORE UPDATE ON marks
+FOR EACH ROW
+BEGIN
+    IF NEW.marks_obtained < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Marks cannot be negative';
+    END IF;
+END$$
+DELIMITER ;
+
+
+-- Q96. Display all triggers created in the database.
+SHOW TRIGGERS;
+
+
+-- Q97. Test the negative marks trigger.
+-- This statement should FAIL because negative marks are not allowed.
+INSERT INTO marks (student_id, exam_id, marks_obtained)
+VALUES (1, 1, -10);
+
+-- Expected error:
+-- ERROR 1644 (45000): Marks cannot be negative
+
+
+-- ============================================================
+-- E. OTHER: CASE, STORED FUNCTION AND TRANSACTION
+-- Q98 - Q100
+-- ============================================================
+
+-- Q98. CASE: categorize students based on their average marks.
+SELECT s.student_name,
+       ROUND(AVG(m.marks_obtained), 2) AS average_marks,
+       CASE
+           WHEN AVG(m.marks_obtained) >= 90 THEN 'Excellent'
+           WHEN AVG(m.marks_obtained) >= 80 THEN 'Very Good'
+           WHEN AVG(m.marks_obtained) >= 70 THEN 'Good'
+           WHEN AVG(m.marks_obtained) >= 60 THEN 'Average'
+           ELSE 'Needs Improvement'
+       END AS performance_category
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+GROUP BY s.student_id, s.student_name
+ORDER BY average_marks DESC;
+
+
+-- Q99. Stored FUNCTION: calculate the attendance percentage of a student.
+-- A function returns one value and can be used inside SELECT.
+DROP FUNCTION IF EXISTS fn_student_attendance;
+
+DELIMITER $$
+CREATE FUNCTION fn_student_attendance(p_student_id INT)
+RETURNS DECIMAL(5,2)
+READS SQL DATA
+BEGIN
+    DECLARE v_percentage DECIMAL(5,2);
+
+    SELECT COALESCE(
+        ROUND(SUM(attended_classes) * 100.0 /
+              NULLIF(SUM(total_classes), 0), 2),
+        0
+    )
+    INTO v_percentage
+    FROM attendance
+    WHERE student_id = p_student_id;
+
+    RETURN v_percentage;
+END$$
+DELIMITER ;
+
+-- Use the function to display every student's attendance percentage.
+SELECT student_name,
+       fn_student_attendance(student_id) AS attendance_percentage
+FROM students;
+
+
+-- Q100. TRANSACTION with SAVEPOINT: update attendance and roll back.
+-- The original attendance value is restored.
+START TRANSACTION;
+
+SAVEPOINT before_attendance_update;
+
+UPDATE attendance
+SET attended_classes = attended_classes + 1
+WHERE student_id = 1
+  AND course_id = 1;
+
+SELECT *
+FROM attendance
+WHERE student_id = 1
+  AND course_id = 1;
+
+ROLLBACK TO SAVEPOINT before_attendance_update;
+
+COMMIT;
+
+-- Verify that the original attendance value is restored.
+SELECT *
+FROM attendance
+WHERE student_id = 1
+  AND course_id = 1;
+
+
+-- ============================================================
+-- LIST EVERYTHING CREATED IN THIS FILE
+-- ============================================================
+
+SHOW FULL TABLES WHERE Table_type = 'VIEW';
+
+SHOW PROCEDURE STATUS
+WHERE Db = 'smart_college';
+
+SHOW FUNCTION STATUS
+WHERE Db = 'smart_college';
+
+SHOW TRIGGERS;
