@@ -1,0 +1,244 @@
+USE smart_college;
+
+-- =========================================================
+-- SIMPLE QUERIES
+-- Q1 - Q40
+-- =========================================================
+
+
+-- =========================================================
+-- 1. SELECT * AND SELECTING COLUMNS
+-- =========================================================
+
+-- Q1. Display all departments.
+SELECT * FROM departments;
+
+-- Q2. Display all students.
+SELECT * FROM students;
+
+-- Q3. Display all faculty members.
+SELECT * FROM faculty;
+
+-- Q4. Display all courses.
+SELECT * FROM courses;
+
+-- Q5. Display all enrollments.
+SELECT * FROM enrollments;
+
+-- Q6. Display all attendance records.
+SELECT * FROM attendance;
+
+-- Q7. Display all examinations.
+SELECT * FROM exams;
+
+-- Q8. Display all student marks.
+SELECT * FROM marks;
+
+-- Q9. Display student names and email addresses.
+SELECT student_name, email FROM students;
+
+-- Q10. Display faculty names and email addresses.
+SELECT faculty_name, email FROM faculty;
+
+-- Q11. Display course names and credits.
+SELECT course_name, credits FROM courses;
+
+-- Q12. Display department names.
+SELECT department_name FROM departments;
+
+-- Q13. Display student names and phone numbers.
+SELECT student_name, phone FROM students;
+
+
+-- =========================================================
+-- 2. FILTERING (WHERE, AND, OR, NOT, LIKE, BETWEEN, IN)
+-- =========================================================
+
+-- Q14. Display students from department ID 1.
+SELECT student_id, student_name, department_id
+FROM students
+WHERE department_id = 1;
+
+-- Q15. Display students admitted in 2025.
+SELECT student_name, admission_year
+FROM students
+WHERE admission_year = 2025;
+
+-- Q16. Display faculty members from department ID 1.
+SELECT faculty_name, department_id
+FROM faculty
+WHERE department_id = 1;
+
+-- Q17. Display courses having more than 3 credits.
+SELECT course_name, credits
+FROM courses
+WHERE credits > 3;
+
+-- Q18. AND: Display students admitted in 2025
+-- and belonging to department ID 1.
+SELECT student_name, admission_year, department_id
+FROM students
+WHERE admission_year = 2025
+AND department_id = 1;
+
+-- Q19. OR: Display students from department ID 1 or 2.
+SELECT student_name, department_id
+FROM students
+WHERE department_id = 1 OR department_id = 2;
+
+-- Q20. BETWEEN: Display students admitted between 2024 and 2026.
+SELECT student_name, admission_year
+FROM students
+WHERE admission_year BETWEEN 2024 AND 2026;
+
+-- Q21. LIKE: Display students whose names start with A.
+SELECT student_id, student_name
+FROM students
+WHERE student_name LIKE 'A%';
+
+-- Q22. LIKE: Display faculty members whose names start with S.
+SELECT faculty_name
+FROM faculty
+WHERE faculty_name LIKE 'S%';
+
+-- Q23. IN: Display students belonging to department ID 1, 2 or 3.
+SELECT student_name, department_id
+FROM students
+WHERE department_id IN (1, 2, 3);
+
+-- Q24. NOT IN: Display students who do not belong
+-- to department ID 1 or 2.
+SELECT student_name, department_id
+FROM students
+WHERE department_id NOT IN (1, 2);
+
+-- Q25. Display attendance records having less than 90%
+-- attendance.
+SELECT student_id, total_classes, attended_classes
+FROM attendance
+WHERE (attended_classes / NULLIF(total_classes, 0)) * 100 < 90;
+
+-- Q26. Display marks greater than or equal to 80.
+SELECT student_id, exam_id, marks_obtained
+FROM marks
+WHERE marks_obtained >= 80;
+
+
+-- =========================================================
+-- 3. SORTING, LIMIT AND DISTINCT
+-- =========================================================
+
+-- Q27. Display students in alphabetical order.
+SELECT student_name
+FROM students
+ORDER BY student_name ASC;
+
+-- Q28. Display students in descending order of admission year.
+SELECT student_name, admission_year
+FROM students
+ORDER BY admission_year DESC;
+
+-- Q29. Display the top 3 students based on marks.
+SELECT s.student_name, m.marks_obtained
+FROM students s
+JOIN marks m ON s.student_id = m.student_id
+ORDER BY m.marks_obtained DESC
+LIMIT 3;
+
+-- Q30. Display courses in descending order of credits.
+SELECT course_name, credits
+FROM courses
+ORDER BY credits DESC;
+
+-- Q31. Display different department IDs without repeats.
+SELECT DISTINCT department_id
+FROM students
+ORDER BY department_id;
+
+
+-- =========================================================
+-- 4. DATA COMMANDS
+-- INSERT, UPDATE, DELETE, ALTER, RENAME, DROP
+-- Practising on a copy of the students table
+-- =========================================================
+
+-- Q32. Create a practice copy of the students table.
+DROP TABLE IF EXISTS practice_students;
+
+CREATE TABLE practice_students AS
+SELECT * FROM students;
+
+SELECT * FROM practice_students;
+
+
+-- Q33. INSERT: Add a new student to the practice table.
+INSERT INTO practice_students
+(student_id, student_name, gender, email, phone,
+ department_id, admission_year)
+VALUES
+(999, 'Practice Student', 'Male', 'practice@gmail.com',
+ '9876543210', 1, 2026);
+
+SELECT * FROM practice_students
+WHERE student_id = 999;
+
+
+-- Q34. UPDATE: Change the admission year of practice student.
+UPDATE practice_students
+SET admission_year = 2025
+WHERE student_id = 999;
+
+SELECT student_name, admission_year
+FROM practice_students
+WHERE student_id = 999;
+
+
+-- Q35. UPDATE: Change the phone number of students
+-- belonging to department ID 1.
+UPDATE practice_students
+SET phone = '9999999999'
+WHERE department_id = 1;
+
+SELECT student_id, student_name, phone
+FROM practice_students
+WHERE department_id = 1;
+
+
+-- Q36. DELETE: Remove the practice student.
+DELETE FROM practice_students
+WHERE student_id = 999;
+
+SELECT * FROM practice_students
+WHERE student_id = 999;
+
+
+-- Q37. ALTER TABLE: Add a new column.
+ALTER TABLE practice_students
+ADD COLUMN student_status VARCHAR(20) DEFAULT 'Active';
+
+SELECT student_id, student_name, student_status
+FROM practice_students
+LIMIT 5;
+
+
+-- Q38. RENAME COLUMN: Rename student_status to status.
+ALTER TABLE practice_students
+RENAME COLUMN student_status TO status;
+
+SELECT student_id, student_name, status
+FROM practice_students
+LIMIT 5;
+
+
+-- Q39. RENAME TABLE: Rename practice_students
+-- to practice_student_records.
+RENAME TABLE practice_students
+TO practice_student_records;
+
+SHOW TABLES;
+
+
+-- Q40. DROP TABLE: Delete the practice table.
+DROP TABLE practice_student_records;
+
+SHOW TABLES;
